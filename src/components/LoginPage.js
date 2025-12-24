@@ -39,6 +39,8 @@ function LoginPage({ onLogin }) {
     const success = login(username, password);
     if (success && onLogin) {
       onLogin();
+      // Принудительно обновляем страницу для отображения основного интерфейса
+      window.location.reload();
     }
   };
 
