@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './App.css';
 import ParticipantCard from './components/ParticipantCard';
 import AddParticipantForm from './components/AddParticipantForm';
+import ParticipantTable from './components/ParticipantTable';
 
 function App() {
   // список участников
@@ -47,6 +48,7 @@ function App() {
           );
         })}
       </div>
+      <ParticipantTable participants={participants} />
     </div>
   );
 }
