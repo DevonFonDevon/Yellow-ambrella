@@ -18,7 +18,7 @@ import { useAuth } from './hooks/useAuth';
  */
 function App() {
   // Используем хук аутентификации
-  const { isAuthenticated, loading, logout } = useAuth();
+  const { isAuthenticated, loading, logout, getCurrentUser } = useAuth();
   // список участников
   const [participants, setParticipants] = useState([]);
   // следующий ID для нового чувака
@@ -63,8 +63,12 @@ function App() {
    * Вызывается из компонента LoginPage при успешной аутентификации
    */
   function handleLogin() {
-    // Можно добавить дополнительные действия при входе
-    console.log('Пользователь успешно вошел в систему');
+    // Получаем информацию о текущем пользователе
+    const user = getCurrentUser();
+    if (user) {
+      console.log(`Пользователь ${user.username} успешно вошел в систему`);
+      console.log('Последний вход:', user.lastLogin);
+    }
   }
 
   /**
