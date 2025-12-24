@@ -18,7 +18,7 @@ import { useAuth } from './hooks/useAuth';
  */
 function App() {
   // Используем хук аутентификации
-  const { isAuthenticated, loading } = useAuth();
+  const { isAuthenticated, loading, logout } = useAuth();
   // список участников
   const [participants, setParticipants] = useState([]);
   // следующий ID для нового чувака
@@ -67,6 +67,14 @@ function App() {
     console.log('Пользователь успешно вошел в систему');
   }
 
+  /**
+   * Обработчик выхода из системы
+   * Вызывает функцию logout из хука аутентификации
+   */
+  function handleLogout() {
+    logout();
+  }
+
   // Пока идет загрузка, показываем загрузочный экран
   if (loading) {
     return (
@@ -88,7 +96,14 @@ function App() {
   // Если пользователь авторизован, показываем основное приложение
   return (
     <div className="App">
-      <h1>Участники фестиваля</h1>
+      {/* Заголовок приложения с кнопкой выхода */}
+      <div className="app-header">
+        <h1>Участники фестиваля</h1>
+        <button className="logout-btn" onClick={handleLogout}>
+          Выйти
+        </button>
+      </div>
+      
       <AddParticipantForm onAddParticipant={addParticipant} />
       <div className="participants-list">
         {participants.map(function(participant) {
