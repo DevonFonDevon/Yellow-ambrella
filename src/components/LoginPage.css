@@ -1,60 +1,107 @@
+/* Основной контейнер страницы входа */
 .login-page {
+  /* Используем flexbox для центрирования содержимого */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  
+  /* Занимаем всю высоту экрана */
   height: 100vh;
+  
+  /* Светлый фон для страницы */
   background-color: #f0f0f0;
+  
+  /* Шрифт по умолчанию */
   font-family: Arial, sans-serif;
 }
 
+/* Стили для заголовка */
 .login-page h1 {
   margin-bottom: 10px;
 }
 
+/* Стили для подзаголовка */
 .login-page p {
   margin-bottom: 20px;
   color: #535050;
 }
 
+/* Контейнер формы входа */
 .login-form {
+  /* Вертикальная ориентация элементов формы */
   display: flex;
   flex-direction: column;
+  
+  /* Фиксированная ширина формы */
   width: 300px;
 }
 
+/* Стили для полей ввода */
 .login-form input {
   margin-bottom: 10px;
   padding: 10px;
+  
+  /* Стиль границы */
   border: 1px solid #ccc;
   border-radius: 4px;
+  
+  /* Размер шрифта */
   font-size: 16px;
 }
 
+/* Стили для кнопки входа */
 .login-form button {
   padding: 10px;
+  
+  /* Синий цвет кнопки */
   background-color: #007bff;
   color: white;
+  
+  /* Без границы */
   border: none;
   border-radius: 4px;
+  
+  /* Курсор в виде руки */
   cursor: pointer;
   font-size: 16px;
 }
 
+/* Эффект при наведении на кнопку */
 .login-form button:hover {
+  /* Темнее синий при наведении */
   background-color: #0056b3;
 }
 
+/* Стили для ссылки на регистрацию */
 .signup-link {
   margin-top: 20px;
   color: #666;
 }
 
+/* Стили для самой ссылки */
 .signup-link a {
   color: #007bff;
   text-decoration: none;
 }
 
+/* Эффект при наведении на ссылку */
 .signup-link a:hover {
   text-decoration: underline;
+}
+
+/* Стили для кнопки переключения режимов */
+.toggle-mode-btn {
+  background: none;
+  border: none;
+  color: #007bff;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0;
+  margin: 0;
+}
+
+.toggle-mode-btn:hover {
+  color: #0056b3;
 }
