@@ -2,13 +2,17 @@
 import React, { useState } from 'react';
 // Импорт стилей для компонента страницы входа
 import './LoginPage.css';
+// Импорт хука аутентификации
+import { useAuth } from '../hooks/useAuth';
 
 /**
  * Компонент страницы входа и регистрации
  * Предоставляет формы для аутентификации и регистрации пользователей
+ * @param {Object} props - Свойства компонента
+ * @param {Function} props.onLogin - Функция для обработки успешного входа
  * @returns {JSX.Element} Компонент страницы входа/регистрации
  */
-function LoginPage() {
+function LoginPage({ onLogin }) {
   // Состояние для хранения введенного логина
   const [username, setUsername] = useState('');
   // Состояние для хранения введенного пароля
@@ -17,25 +21,56 @@ function LoginPage() {
   const [confirmPassword, setConfirmPassword] = useState('');
   // Состояние для переключения между формами
   const [isLoginMode, setIsLoginMode] = useState(true);
+  
+  // Используем хук аутентификации
+  const { register, login } = useAuth();
 
   /**
    * Обработчик события входа в систему
-   * В текущей реализации просто выводит введенные данные в alert
-   * В будущем может быть заменен на реальную логику аутентификации
+   * Вызывает функцию login из хука аутентификации
    */
   const handleLogin = () => {
-    // Пример: просто alert для демонстрации
-    alert(`Вход: ${username}, Пароль: ${password}`);
+    if (!username || !password) {
+      alert('Пожалуйста, заполните все поля');
+      return;
+    }
+    
+    // Вызываем функцию входа из хука аутентификации
+    const success = login(username, password);
+    if (success && onLogin) {
+      onLogin();
+    }
   };
 
   /**
    * Обработчик события регистрации
-   * В текущей реализации просто выводит введенные данные в alert
-   * В будущем может быть заменен на реальную логику регистрации
+   * Проверяет валидность данных и вызывает функцию регистрации из хука
    */
   const handleRegister = () => {
-    // Пример: просто alert для демонстрации
-    alert(`Регистрация: ${username}, Пароль: ${password}`);
+    if (!username || !password || !confirmPassword) {
+      alert('Пожалуйста, заполните все поля');
+      return;
+    }
+    
+    if (password !== confirmPassword) {
+      alert('Пароли не совпадают');
+      return;
+    }
+    
+    if (password.length < 6) {
+      alert('Пароль должен быть не менее 6 символов');
+      return;
+    }
+    
+    // Вызываем функцию регистрации из хука аутентификации
+    const success = register(username, password);
+    if (success) {
+      // После успешной регистрации переключаемся на форму входа
+      setIsLoginMode(true);
+      setUsername('');
+      setPassword('');
+      setConfirmPassword('');
+    }
   };
 
   /**
