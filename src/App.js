@@ -1,32 +1,30 @@
-// Импорт необходимых модулей React
+// Импортируем React и хуки
 import React, { useState } from 'react';
-// Импорт стилей приложения
+// Импортируем стили
 import './App.css';
-// Импорт компонентов для управления участниками
+// Импортируем компоненты для управления участниками
 import ParticipantCard from './components/ParticipantCard';
 import AddParticipantForm from './components/AddParticipantForm';
 import ParticipantTable from './components/ParticipantTable';
-// Импорт компонента страницы входа
+// Импортируем компонент страницы входа
 import LoginPage from './components/LoginPage';
-// Импорт хука аутентификации
+// Импортируем хук аутентификации
 import { useAuth } from './hooks/useAuth';
+// Импортируем React Router
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 /**
- * Главный компонент приложения
- * Управляет аутентификацией и отображением основного интерфейса
- * @returns {JSX.Element} Главный компонент приложения
+ * Компонент основного приложения
+ * Содержит список участников и форму добавления
  */
-function App() {
-  // Используем хук аутентификации
-  const { isAuthenticated, loading, logout, getCurrentUser } = useAuth();
-  // список участников
+function MainApp() {
+  // Список участников
   const [participants, setParticipants] = useState([]);
-  // следующий ID для нового чувака
+  // Следующий ID для нового участника
   const [nextId, setNextId] = useState(1);
 
   /**
    * Добавление нового участника
-   * @param {Object} newParticipant - Данные нового участника
    */
   function addParticipant(newParticipant) {
     const participantWithId = { ...newParticipant, id: nextId };
@@ -36,8 +34,6 @@ function App() {
 
   /**
    * Обновление данных участника
-   * @param {number} id - ID участника
-   * @param {Object} updatedData - Обновленные данные участника
    */
   function updateParticipant(id, updatedData) {
     setParticipants(participants.map(function(p) {
@@ -50,7 +46,6 @@ function App() {
 
   /**
    * Удаление участника
-   * @param {number} id - ID участника для удаления
    */
   function deleteParticipant(id) {
     setParticipants(participants.filter(function(p) {
@@ -58,54 +53,12 @@ function App() {
     }));
   }
 
-  /**
-   * Обработчик успешного входа
-   * Вызывается из компонента LoginPage при успешной аутентификации
-   */
-  function handleLogin() {
-    // Получаем информацию о текущем пользователе
-    const user = getCurrentUser();
-    if (user) {
-      console.log(`Пользователь ${user.username} успешно вошел в систему`);
-      console.log('Последний вход:', user.lastLogin);
-    }
-  }
-
-  /**
-   * Обработчик выхода из системы
-   * Вызывает функцию logout из хука аутентификации
-   */
-  function handleLogout() {
-    logout();
-  }
-
-  // Пока идет загрузка, показываем загрузочный экран
-  if (loading) {
-    return (
-      <div className="App">
-        <h1>Загрузка...</h1>
-      </div>
-    );
-  }
-
-  // Если пользователь не авторизован, показываем страницу входа
-  if (!isAuthenticated()) {
-    return (
-      <div className="App">
-        <LoginPage onLogin={handleLogin} />
-      </div>
-    );
-  }
-
-  // Если пользователь авторизован, показываем основное приложение
   return (
     <div className="App">
       {/* Заголовок приложения с кнопкой выхода */}
       <div className="app-header">
         <h1>Участники фестиваля</h1>
-        <button className="logout-btn" onClick={handleLogout}>
-          Выйти
-        </button>
+        <LogoutButton />
       </div>
       
       <AddParticipantForm onAddParticipant={addParticipant} />
@@ -126,5 +79,68 @@ function App() {
   );
 }
 
-// Экспорт компонента для использования в других модулях
+/**
+ * Компонент кнопки выхода
+ */
+function LogoutButton() {
+  const { logout } = useAuth();
+
+  function handleLogout() {
+    logout();
+  }
+
+  return (
+    <button className="logout-btn" onClick={handleLogout}>
+      Выйти
+    </button>
+  );
+}
+
+/**
+ * Главный компонент приложения с роутингом
+ */
+function App() {
+  // Используем хук аутентификации
+  const { isAuthenticated, loading } = useAuth();
+
+  // Пока идет загрузка, показываем загрузочный экран
+  if (loading) {
+    return (
+      <div className="App">
+        <h1>Загрузка...</h1>
+      </div>
+    );
+  }
+
+  return (
+    <Router>
+      <Routes>
+        {/* Главная страница - если не авторизован, перенаправляем на login */}
+        <Route 
+          path="/" 
+          element={
+            isAuthenticated() ? (
+              <MainApp />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          } 
+        />
+        
+        {/* Страница входа */}
+        <Route 
+          path="/login" 
+          element={
+            !isAuthenticated() ? (
+              <LoginPage />
+            ) : (
+              <Navigate to="/" replace />
+            )
+          } 
+        />
+      </Routes>
+    </Router>
+  );
+}
+
 export default App;

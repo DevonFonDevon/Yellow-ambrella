@@ -4,15 +4,15 @@ import React, { useState } from 'react';
 import './LoginPage.css';
 // Импорт хука аутентификации
 import { useAuth } from '../hooks/useAuth';
+// Импорт React Router для перехода между страницами
+import { useNavigate } from 'react-router-dom';
 
 /**
  * Компонент страницы входа и регистрации
  * Предоставляет формы для аутентификации и регистрации пользователей
- * @param {Object} props - Свойства компонента
- * @param {Function} props.onLogin - Функция для обработки успешного входа
  * @returns {JSX.Element} Компонент страницы входа/регистрации
  */
-function LoginPage({ onLogin }) {
+function LoginPage() {
   // Состояние для хранения введенного логина
   const [username, setUsername] = useState('');
   // Состояние для хранения введенного пароля
@@ -24,6 +24,8 @@ function LoginPage({ onLogin }) {
   
   // Используем хук аутентификации
   const { register, login } = useAuth();
+  // Используем хук навигации для перехода между страницами
+  const navigate = useNavigate();
 
   /**
    * Обработчик события входа в систему
@@ -37,10 +39,9 @@ function LoginPage({ onLogin }) {
     
     // Вызываем функцию входа из хука аутентификации
     const success = login(username, password);
-    if (success && onLogin) {
-      onLogin();
-      // Принудительно обновляем страницу для отображения основного интерфейса
-      window.location.reload();
+    if (success) {
+      // Используем React Router для перехода на главную страницу
+      navigate('/');
     }
   };
 
