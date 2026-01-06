@@ -5,10 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addParticipant, updateParticipant, deleteParticipant } from '../../Actions/PostActions';
 // Импортируем компоненты
 import ParticipantCard from '../../../components/ParticipantCard';
-import AddParticipantForm from '../../../components/AddParticipantForm';
+import AddParticipantForm from './AddParticipantForm';
 import ParticipantTable from '../../../components/ParticipantTable';
 // Импортируем стили
 import './styles.scss';
+import './form-styles.scss';
 
 /**
  * Контейнер для основного приложения с участниками
@@ -30,20 +31,19 @@ const UserViewContainer = () => {
    * Обработчик добавления участника
    */
   const handleAddParticipant = () => {
-    if (!newParticipantData.name || !newParticipantData.email || !newParticipantData.phone) {
-      alert('Пожалуйста, заполните все поля');
-      return;
+    // Валидация происходит в компоненте формы
+    // Если форма валидна, данные уже в newParticipantData
+    if (newParticipantData.name && newParticipantData.email && newParticipantData.phone) {
+      // Отправляем action в Redux
+      dispatch(addParticipant(newParticipantData));
+      
+      // Очищаем форму только после успешного добавления
+      setNewParticipantData({
+        name: '',
+        email: '',
+        phone: ''
+      });
     }
-
-    // Отправляем action в Redux
-    dispatch(addParticipant(newParticipantData));
-    
-    // Очищаем форму
-    setNewParticipantData({
-      name: '',
-      email: '',
-      phone: ''
-    });
   };
 
   /**
