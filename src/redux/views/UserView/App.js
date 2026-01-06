@@ -6,7 +6,6 @@ import { addParticipant, updateParticipant, deleteParticipant } from '../../Acti
 // Импортируем компоненты
 import ParticipantCard from './ParticipantCard';
 import AddParticipantForm from './AddParticipantForm';
-import ParticipantTable from './ParticipantTable';
 // Импортируем стили
 import './styles.scss';
 import './form-styles.scss';
@@ -22,9 +21,11 @@ const UserViewContainer = () => {
 
   // Локальное состояние для формы добавления
   const [newParticipantData, setNewParticipantData] = useState({
-    name: '',
-    email: '',
-    phone: ''
+    firstName: '',
+    creativeNumber: '',
+    phone: '',
+    performanceOrder: '',
+    directorNotes: ''
   });
 
   /**
@@ -33,15 +34,17 @@ const UserViewContainer = () => {
   const handleAddParticipant = () => {
     // Валидация происходит в компоненте формы
     // Если форма валидна, данные уже в newParticipantData
-    if (newParticipantData.name && newParticipantData.email && newParticipantData.phone) {
+    if (newParticipantData.firstName && newParticipantData.creativeNumber && newParticipantData.phone) {
       // Отправляем action в Redux
       dispatch(addParticipant(newParticipantData));
       
       // Очищаем форму только после успешного добавления
       setNewParticipantData({
-        name: '',
-        email: '',
-        phone: ''
+        firstName: '',
+        creativeNumber: '',
+        phone: '',
+        performanceOrder: '',
+        directorNotes: ''
       });
     }
   };
@@ -93,7 +96,6 @@ const UserViewContainer = () => {
         ))}
       </div>
       
-      <ParticipantTable participants={participants} />
     </div>
   );
 };

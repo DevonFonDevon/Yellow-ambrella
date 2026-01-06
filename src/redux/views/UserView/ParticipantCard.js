@@ -43,7 +43,7 @@ const ParticipantCard = ({ participant, onEdit, onDelete }) => {
   return (
     <div className="participant-card">
       <div className="card-header">
-        <h3>{participant.firstName} {participant.lastName}</h3>
+        <h3>{participant.firstName}</h3>
         {participant.performanceOrder && (
           <span className="order-badge">
             №{participant.performanceOrder}
@@ -94,7 +94,6 @@ const ParticipantCard = ({ participant, onEdit, onDelete }) => {
             const formData = new FormData(e.target);
             const updatedData = {
               firstName: formData.get('firstName'),
-              lastName: formData.get('lastName'),
               creativeNumber: formData.get('creativeNumber'),
               phone: formData.get('phone'),
               performanceOrder: formData.get('performanceOrder'),
@@ -109,15 +108,6 @@ const ParticipantCard = ({ participant, onEdit, onDelete }) => {
                   type="text"
                   name="firstName"
                   defaultValue={participant.firstName}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label>Фамилия:</label>
-                <input
-                  type="text"
-                  name="lastName"
-                  defaultValue={participant.lastName}
                   required
                 />
               </div>

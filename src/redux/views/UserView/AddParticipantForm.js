@@ -17,7 +17,6 @@ const AddParticipantForm = ({ onAddParticipant, onDataChange, data }) => {
   const validateForm = () => {
     const newErrors = {};
     if (!data.firstName.trim()) newErrors.firstName = 'Имя обязательно';
-    if (!data.lastName.trim()) newErrors.lastName = 'Фамилия обязательна';
     if (!data.creativeNumber.trim()) newErrors.creativeNumber = 'Творческий номер обязателен';
     if (!data.phone.trim()) newErrors.phone = 'Телефон обязателен';
     else if (!/^\+?\d{10,15}$/.test(data.phone)) newErrors.phone = 'Неверный формат телефона';
@@ -52,18 +51,6 @@ const AddParticipantForm = ({ onAddParticipant, onDataChange, data }) => {
               placeholder="Введите имя"
             />
             {errors.firstName && <span className="error-message">{errors.firstName}</span>}
-          </div>
-
-          <div className="form-group">
-            <label>Фамилия:</label>
-            <input
-              type="text"
-              value={data.lastName}
-              onChange={(e) => onDataChange('lastName', e.target.value)}
-              className={errors.lastName ? 'error' : ''}
-              placeholder="Введите фамилию"
-            />
-            {errors.lastName && <span className="error-message">{errors.lastName}</span>}
           </div>
         </div>
 
