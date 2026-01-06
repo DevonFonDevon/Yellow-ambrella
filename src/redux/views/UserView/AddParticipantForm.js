@@ -20,6 +20,7 @@ const AddParticipantForm = ({ onAddParticipant, onDataChange, data }) => {
     if (!data.creativeNumber.trim()) newErrors.creativeNumber = 'Творческий номер обязателен';
     if (!data.phone.trim()) newErrors.phone = 'Телефон обязателен';
     else if (!/^\+?\d{10,15}$/.test(data.phone)) newErrors.phone = 'Неверный формат телефона. Используйте +375 (XX) XXX-XX-XX';
+    if (!data.duration || data.duration <= 0) newErrors.duration = 'Продолжительность должна быть больше 0 минут';
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -59,8 +60,15 @@ const AddParticipantForm = ({ onAddParticipant, onDataChange, data }) => {
             value={data.creativeNumber}
             onChange={(e) => onDataChange('creativeNumber', e.target.value)}
             className={errors.creativeNumber ? 'error' : ''}
-            placeholder="Описание творческого номера"
+            placeholder="Выберите или введите творческий номер"
+            list="creative-options"
           />
+          <datalist id="creative-options">
+            <option value="Вокал" />
+            <option value="Хореография" />
+            <option value="СДМ" />
+            <option value="Выход ведущих" />
+          </datalist>
           {errors.creativeNumber && <span className="error-message">{errors.creativeNumber}</span>}
         </div>
 
@@ -74,6 +82,19 @@ const AddParticipantForm = ({ onAddParticipant, onDataChange, data }) => {
             placeholder="+375 (XX) XXX-XX-XX"
           />
           {errors.phone && <span className="error-message">{errors.phone}</span>}
+        </div>
+
+        <div className="form-group">
+          <label>Продолжительность номера (мин):</label>
+          <input
+            type="number"
+            value={data.duration}
+            onChange={(e) => onDataChange('duration', e.target.value)}
+            className={errors.duration ? 'error' : ''}
+            placeholder="В минутах"
+            min="1"
+          />
+          {errors.duration && <span className="error-message">{errors.duration}</span>}
         </div>
 
         <div className="form-group">

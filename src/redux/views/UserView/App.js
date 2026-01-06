@@ -26,7 +26,8 @@ const UserViewContainer = () => {
     creativeNumber: '',
     phone: '',
     performanceOrder: '',
-    directorNotes: ''
+    directorNotes: '',
+    duration: ''
   });
 
   // Состояние для показа формы
@@ -48,7 +49,8 @@ const UserViewContainer = () => {
         creativeNumber: '',
         phone: '',
         performanceOrder: '',
-        directorNotes: ''
+        directorNotes: '',
+        duration: ''
       });
     }
   };
@@ -86,16 +88,35 @@ const UserViewContainer = () => {
     dispatch(logoutUser());
   };
 
+  /**
+   * Подсчет общего времени программы
+   */
+  const calculateTotalTime = () => {
+    const totalMinutes = participants.reduce((sum, participant) => {
+      const duration = parseInt(participant.duration) || 0;
+      return sum + duration;
+    }, 0);
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+    return { hours, minutes, totalMinutes };
+  };
+
+  const totalTime = calculateTotalTime();
+
   return (
     <div className="app">
       <div className="app-header">
-        <h1>Участники фестиваля</h1>
+        <h1>Участники концертной программы</h1>
         <div className="header-actions">
           <button onClick={() => setShowForm(!showForm)} className="add-participant-btn">
             {showForm ? 'Скрыть форму' : 'Добавить участника'}
           </button>
           <button onClick={handleLogout} className="logout-btn">Выход</button>
         </div>
+      </div>
+
+      <div className="program-info">
+        <p>Общее время программы: {totalTime.hours} ч {totalTime.minutes} мин ({totalTime.totalMinutes} мин)</p>
       </div>
 
       {showForm && (

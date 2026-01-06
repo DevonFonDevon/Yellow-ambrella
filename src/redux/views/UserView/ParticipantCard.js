@@ -68,52 +68,60 @@ const ParticipantCard = ({ participant, onEdit, onDelete }) => {
       {...listeners}
       className="participant-card"
     >
-      <div className="card-header">
-        <h3>{participant.firstName}</h3>
-        {participant.performanceOrder && (
-          <span className="performance-order">
-            Порядок: {participant.performanceOrder}
-          </span>
-        )}
-      </div>
-
-      <div className="card-content">
-        <div className="info-row">
-          <strong>Творческий номер:</strong>
-          <span>{participant.creativeNumber}</span>
-        </div>
-
-        <div className="info-row">
-          <strong>Телефон:</strong>
-          <span>{participant.phone}</span>
-        </div>
-
-        {participant.directorNotes && (
-          <div className="info-row">
-            <strong>Заметки:</strong>
-            <span className="director-notes">{participant.directorNotes}</span>
+      {!isEditing ? (
+        <>
+          <div className="card-header">
+            <h3>{participant.firstName}</h3>
+            {participant.performanceOrder && (
+              <span className="performance-order">
+                Порядок: {participant.performanceOrder}
+              </span>
+            )}
           </div>
-        )}
-      </div>
 
-      <div className="card-actions">
-        <button 
-          className="edit-btn" 
-          onClick={handleEdit}
-          disabled={isEditing}
-        >
-          Редактировать
-        </button>
-        <button 
-          className="delete-btn" 
-          onClick={handleDelete}
-        >
-          Удалить
-        </button>
-      </div>
+          <div className="card-content">
+            <div className="info-row">
+              <strong>Творческий номер:</strong>
+              <span>{participant.creativeNumber}</span>
+            </div>
 
-      {isEditing && (
-        <div className="edit-overlay">
+            <div className="info-row">
+              <strong>Телефон:</strong>
+              <span>{participant.phone}</span>
+            </div>
+
+            {participant.duration && (
+              <div className="info-row">
+                <strong>Продолжительность:</strong>
+                <span>{participant.duration} мин</span>
+              </div>
+            )}
+
+            {participant.directorNotes && (
+              <div className="info-row">
+                <strong>Заметки:</strong>
+                <span className="director-notes">{participant.directorNotes}</span>
+              </div>
+            )}
+          </div>
+
+          <div className="card-actions">
+            <button
+              className="edit-btn"
+              onClick={handleEdit}
+            >
+              Редактировать
+            </button>
+            <button
+              className="delete-btn"
+              onClick={handleDelete}
+            >
+              Удалить
+            </button>
+          </div>
+        </>
+      ) : (
+        <div className="edit-mode">
           <h4>Редактирование участника</h4>
           <form onSubmit={(e) => {
             e.preventDefault();
@@ -123,57 +131,64 @@ const ParticipantCard = ({ participant, onEdit, onDelete }) => {
               creativeNumber: formData.get('creativeNumber'),
               phone: formData.get('phone'),
               performanceOrder: formData.get('performanceOrder'),
-              directorNotes: formData.get('directorNotes')
+              directorNotes: formData.get('directorNotes'),
+              duration: formData.get('duration')
             };
             handleSave(updatedData);
           }}>
-            <div className="form-row">
-              <div className="form-group">
-                <label>Имя:</label>
-                <input
-                  type="text"
-                  name="firstName"
-                  defaultValue={participant.firstName}
-                  required
-                  className="form-input"
-                />
-              </div>
+            <div className="form-group">
+              <label>Имя:</label>
+              <input
+                type="text"
+                name="firstName"
+                defaultValue={participant.firstName}
+                required
+                className="form-input"
+              />
             </div>
 
-            <div className="form-row">
-              <div className="form-group">
-                <label>Творческий номер:</label>
-                <input
-                  type="text"
-                  name="creativeNumber"
-                  defaultValue={participant.creativeNumber}
-                  required
-                  className="form-input"
-                />
-              </div>
-              <div className="form-group">
-                <label>Телефон:</label>
-                <input
-                  type="tel"
-                  name="phone"
-                  defaultValue={participant.phone}
-                  required
-                  className="form-input"
-                />
-              </div>
+            <div className="form-group">
+              <label>Творческий номер:</label>
+              <input
+                type="text"
+                name="creativeNumber"
+                defaultValue={participant.creativeNumber}
+                required
+                className="form-input"
+              />
             </div>
 
-            <div className="form-row">
-              <div className="form-group">
-                <label>Порядок выступления:</label>
-                <input
-                  type="number"
-                  name="performanceOrder"
-                  defaultValue={participant.performanceOrder || ''}
-                  min="1"
-                  className="form-input"
-                />
-              </div>
+            <div className="form-group">
+              <label>Телефон:</label>
+              <input
+                type="tel"
+                name="phone"
+                defaultValue={participant.phone}
+                required
+                className="form-input"
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Продолжительность номера (мин):</label>
+              <input
+                type="number"
+                name="duration"
+                defaultValue={participant.duration || ''}
+                min="1"
+                className="form-input"
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Порядок выступления:</label>
+              <input
+                type="number"
+                name="performanceOrder"
+                defaultValue={participant.performanceOrder || ''}
+                min="1"
+                className="form-input"
+              />
             </div>
 
             <div className="form-group">
@@ -191,8 +206,8 @@ const ParticipantCard = ({ participant, onEdit, onDelete }) => {
               <button type="submit" className="save-btn">
                 Сохранить
               </button>
-              <button 
-                type="button" 
+              <button
+                type="button"
                 className="cancel-btn"
                 onClick={handleCancel}
               >

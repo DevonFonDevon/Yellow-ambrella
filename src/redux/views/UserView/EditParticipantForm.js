@@ -14,7 +14,8 @@ const EditParticipantForm = ({ participant, onUpdateParticipant, onCancel }) => 
     creativeNumber: participant.creativeNumber || '',
     phone: participant.phone || '',
     performanceOrder: participant.performanceOrder || '',
-    directorNotes: participant.directorNotes || ''
+    directorNotes: participant.directorNotes || '',
+    duration: participant.duration || ''
   });
 
   // Локальное состояние для ошибок валидации
@@ -29,6 +30,7 @@ const EditParticipantForm = ({ participant, onUpdateParticipant, onCancel }) => 
     if (!formData.creativeNumber.trim()) newErrors.creativeNumber = 'Творческий номер обязателен';
     if (!formData.phone.trim()) newErrors.phone = 'Телефон обязателен';
     else if (!/^\+?\d{10,15}$/.test(formData.phone)) newErrors.phone = 'Неверный формат телефона';
+    if (!formData.duration || formData.duration <= 0) newErrors.duration = 'Продолжительность должна быть больше 0 минут';
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -86,8 +88,15 @@ const EditParticipantForm = ({ participant, onUpdateParticipant, onCancel }) => 
             value={formData.creativeNumber}
             onChange={(e) => handleInputChange('creativeNumber', e.target.value)}
             className={errors.creativeNumber ? 'error' : ''}
-            placeholder="Описание творческого номера"
+            placeholder="Выберите или введите творческий номер"
+            list="creative-options-edit"
           />
+          <datalist id="creative-options-edit">
+            <option value="Вокал" />
+            <option value="Хореография" />
+            <option value="СДМ" />
+            <option value="Выход ведущих" />
+          </datalist>
           {errors.creativeNumber && <span className="error-message">{errors.creativeNumber}</span>}
         </div>
 
@@ -101,6 +110,19 @@ const EditParticipantForm = ({ participant, onUpdateParticipant, onCancel }) => 
             placeholder="+375 (XX) XXX-XX-XX"
           />
           {errors.phone && <span className="error-message">{errors.phone}</span>}
+        </div>
+
+        <div className="form-group">
+          <label>Продолжительность номера (мин):</label>
+          <input
+            type="number"
+            value={formData.duration}
+            onChange={(e) => handleInputChange('duration', e.target.value)}
+            className={errors.duration ? 'error' : ''}
+            placeholder="В минутах"
+            min="1"
+          />
+          {errors.duration && <span className="error-message">{errors.duration}</span>}
         </div>
 
         <div className="form-group">
