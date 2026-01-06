@@ -1,12 +1,32 @@
 // Импортируем React
 import React, { useState } from 'react';
+// Импортируем библиотеку DnD
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 // Импортируем стили
 import './styles.scss';
 
 /**
- * Компонент карточки участника для Redux версии
+ * Компонент карточки участника для Redux версии с поддержкой drag-and-drop
  */
 const ParticipantCard = ({ participant, onEdit, onDelete }) => {
+  // Используем хуки DnD
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging
+  } = useSortable({ id: participant.id });
+
+  // Стили для перетаскивания
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+    cursor: isDragging ? 'grabbing' : 'grab'
+  };
   const [isEditing, setIsEditing] = useState(false);
 
   /**
@@ -41,12 +61,18 @@ const ParticipantCard = ({ participant, onEdit, onDelete }) => {
   };
 
   return (
-    <div className="participant-card">
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      className="participant-card"
+    >
       <div className="card-header">
         <h3>{participant.firstName}</h3>
         {participant.performanceOrder && (
-          <span className="order-badge">
-            №{participant.performanceOrder}
+          <span className="performance-order">
+            Порядок: {participant.performanceOrder}
           </span>
         )}
       </div>
@@ -64,7 +90,7 @@ const ParticipantCard = ({ participant, onEdit, onDelete }) => {
 
         {participant.directorNotes && (
           <div className="info-row">
-            <strong>Заметки режиссера:</strong>
+            <strong>Заметки:</strong>
             <span className="director-notes">{participant.directorNotes}</span>
           </div>
         )}
@@ -109,6 +135,7 @@ const ParticipantCard = ({ participant, onEdit, onDelete }) => {
                   name="firstName"
                   defaultValue={participant.firstName}
                   required
+                  className="form-input"
                 />
               </div>
             </div>
@@ -121,6 +148,7 @@ const ParticipantCard = ({ participant, onEdit, onDelete }) => {
                   name="creativeNumber"
                   defaultValue={participant.creativeNumber}
                   required
+                  className="form-input"
                 />
               </div>
               <div className="form-group">
@@ -130,6 +158,7 @@ const ParticipantCard = ({ participant, onEdit, onDelete }) => {
                   name="phone"
                   defaultValue={participant.phone}
                   required
+                  className="form-input"
                 />
               </div>
             </div>
@@ -142,6 +171,7 @@ const ParticipantCard = ({ participant, onEdit, onDelete }) => {
                   name="performanceOrder"
                   defaultValue={participant.performanceOrder || ''}
                   min="1"
+                  className="form-input"
                 />
               </div>
             </div>
@@ -153,6 +183,7 @@ const ParticipantCard = ({ participant, onEdit, onDelete }) => {
                 defaultValue={participant.directorNotes || ''}
                 rows="3"
                 placeholder="Заметки режиссера о участнике"
+                className="form-textarea"
               />
             </div>
 

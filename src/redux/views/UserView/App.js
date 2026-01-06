@@ -3,9 +3,10 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 // Импортируем actions
 import { addParticipant, updateParticipant, deleteParticipant } from '../../Actions/PostActions';
+import { logoutUser } from '../../Actions/UserActions';
 // Импортируем компоненты
-import ParticipantCard from './ParticipantCard';
 import AddParticipantForm from './AddParticipantForm';
+import ParticipantGrid from './ParticipantGrid';
 // Импортируем стили
 import './styles.scss';
 import './form-styles.scss';
@@ -27,6 +28,9 @@ const UserViewContainer = () => {
     performanceOrder: '',
     directorNotes: ''
   });
+
+  // Состояние для показа формы
+  const [showForm, setShowForm] = useState(false);
 
   /**
    * Обработчик добавления участника
@@ -75,40 +79,39 @@ const UserViewContainer = () => {
     });
   };
 
+  /**
+   * Обработчик выхода
+   */
+  const handleLogout = () => {
+    dispatch(logoutUser());
+  };
+
   return (
     <div className="app">
-      <h1>Участники фестиваля</h1>
-      
-      <AddParticipantForm 
-        onAddParticipant={handleAddParticipant}
-        onDataChange={handleFormChange}
-        data={newParticipantData}
-      />
-      
-      <div className="participants-list">
-        {participants
-          .slice()
-          .sort((a, b) => {
-            // Сначала сортируем по порядку выступления
-            if (a.performanceOrder && b.performanceOrder) {
-              return a.performanceOrder - b.performanceOrder;
-            }
-            // Участники с указанным порядком выступления идут первыми
-            if (a.performanceOrder && !b.performanceOrder) return -1;
-            if (!a.performanceOrder && b.performanceOrder) return 1;
-            // Если порядок не указан у обоих, сортируем по ID
-            return a.id - b.id;
-          })
-          .map((participant) => (
-            <ParticipantCard
-              key={participant.id}
-              participant={participant}
-              onEdit={handleUpdateParticipant}
-              onDelete={handleDeleteParticipant}
-            />
-          ))}
+      <div className="app-header">
+        <h1>Участники фестиваля</h1>
+        <div className="header-actions">
+          <button onClick={() => setShowForm(!showForm)} className="add-participant-btn">
+            {showForm ? 'Скрыть форму' : 'Добавить участника'}
+          </button>
+          <button onClick={handleLogout} className="logout-btn">Выход</button>
+        </div>
       </div>
-      
+
+      {showForm && (
+        <AddParticipantForm
+          onAddParticipant={handleAddParticipant}
+          onDataChange={handleFormChange}
+          data={newParticipantData}
+        />
+      )}
+
+      <ParticipantGrid
+        participants={participants}
+        onEdit={handleUpdateParticipant}
+        onDelete={handleDeleteParticipant}
+      />
+
     </div>
   );
 };

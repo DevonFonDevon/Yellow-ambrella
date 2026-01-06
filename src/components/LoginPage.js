@@ -21,6 +21,8 @@ function LoginPage() {
   const [confirmPassword, setConfirmPassword] = useState('');
   // Состояние для переключения между формами
   const [isLoginMode, setIsLoginMode] = useState(true);
+  // Состояние для хранения ошибок валидации
+  const [errors, setErrors] = useState({});
   
   // Используем хук аутентификации
   const { register, login } = useAuth();
@@ -28,12 +30,28 @@ function LoginPage() {
   const navigate = useNavigate();
 
   /**
+   * Валидация формы
+   */
+  const validateForm = () => {
+    const newErrors = {};
+    if (!username.trim()) newErrors.username = 'Имя пользователя обязательно';
+    if (!password.trim()) newErrors.password = 'Пароль обязателен';
+    if (!isLoginMode) {
+      if (!confirmPassword.trim()) newErrors.confirmPassword = 'Подтверждение пароля обязательно';
+      else if (password !== confirmPassword) newErrors.confirmPassword = 'Пароли не совпадают';
+      if (password.length < 6) newErrors.password = 'Пароль должен быть не менее 6 символов';
+    }
+    return newErrors;
+  };
+
+  /**
    * Обработчик события входа в систему
    * Вызывает функцию login из хука аутентификации
    */
   const handleLogin = () => {
-    if (!username || !password) {
-      alert('Пожалуйста, заполните все поля');
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
       return;
     }
     
@@ -50,18 +68,9 @@ function LoginPage() {
    * Проверяет валидность данных и вызывает функцию регистрации из хука
    */
   const handleRegister = () => {
-    if (!username || !password || !confirmPassword) {
-      alert('Пожалуйста, заполните все поля');
-      return;
-    }
-    
-    if (password !== confirmPassword) {
-      alert('Пароли не совпадают');
-      return;
-    }
-    
-    if (password.length < 6) {
-      alert('Пароль должен быть не менее 6 символов');
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
       return;
     }
     
@@ -73,6 +82,7 @@ function LoginPage() {
       setUsername('');
       setPassword('');
       setConfirmPassword('');
+      setErrors({});
     }
   };
 
@@ -85,54 +95,63 @@ function LoginPage() {
     setUsername('');
     setPassword('');
     setConfirmPassword('');
+    setErrors({});
   };
 
   return (
     <div className="login-page">
-      {/* Заголовок страницы */}
-      <h1>{isLoginMode ? 'Добро пожаловать' : 'Создание аккаунта'}</h1>
-      
-      {/* Подзаголовок с инструкцией */}
-      <p>
-        {isLoginMode
-          ? 'Введите логин и пароль, чтобы начать'
-          : 'Заполните форму для создания нового аккаунта'
-        }
-      </p>
-      
       {/* Форма входа/регистрации */}
-      <div className="login-form">
-        {/* Поле ввода логина */}
-        <input
-          type="text"
-          placeholder="Имя пользователя"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
+      <form onSubmit={(e) => { e.preventDefault(); isLoginMode ? handleLogin() : handleRegister(); }} className="login-form">
+        <h2>{isLoginMode ? 'Добро пожаловать' : 'Создание аккаунта'}</h2>
         
-        {/* Поле ввода пароля */}
-        <input
-          type="password"
-          placeholder="Пароль"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <div className="form-row">
+          <div className="form-group">
+            <label>Имя пользователя:</label>
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className={errors.username ? 'error' : ''}
+              placeholder="Введите имя пользователя"
+            />
+            {errors.username && <span className="error">{errors.username}</span>}
+          </div>
+        </div>
         
-        {/* Поле подтверждения пароля (только для регистрации) */}
+        <div className="form-row">
+          <div className="form-group">
+            <label>Пароль:</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className={errors.password ? 'error' : ''}
+              placeholder="Введите пароль"
+            />
+            {errors.password && <span className="error">{errors.password}</span>}
+          </div>
+        </div>
+        
         {!isLoginMode && (
-          <input
-            type="password"
-            placeholder="Подтвердите пароль"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
+          <div className="form-row">
+            <div className="form-group">
+              <label>Подтвердите пароль:</label>
+              <input
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className={errors.confirmPassword ? 'error' : ''}
+                placeholder="Подтвердите пароль"
+              />
+              {errors.confirmPassword && <span className="error">{errors.confirmPassword}</span>}
+            </div>
+          </div>
         )}
         
-        {/* Кнопка действия */}
-        <button onClick={isLoginMode ? handleLogin : handleRegister}>
+        <button type="submit">
           {isLoginMode ? 'Войти' : 'Зарегистрироваться'}
         </button>
-      </div>
+      </form>
       
       {/* Ссылка для переключения между формами */}
       <p className="signup-link">

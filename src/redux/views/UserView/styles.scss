@@ -2,15 +2,75 @@
 
 .app {
   font-family: Arial, sans-serif;
-  max-width: 800px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.header-actions {
+  display: flex;
+  gap: 15px;
+}
+
+.add-participant-btn {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #28a745, #20c997);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+}
+
+.add-participant-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(40, 167, 69, 0.4);
+  background: linear-gradient(135deg, #20c997, #17a2b8);
+}
+
+.logout-btn {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #dc3545, #c82333);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+}
+
+.logout-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(220, 53, 69, 0.4);
+  background: linear-gradient(135deg, #c82333, #a02622);
 }
 
 h1 {
   text-align: center;
   color: #333;
   margin-bottom: 30px;
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .participants-list {
@@ -144,4 +204,316 @@ h1 {
   color: #dc3545;
   font-size: 14px;
   margin-top: 5px;
+}
+
+// Стили для сетки участников
+.participants-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  margin-bottom: 30px;
+}
+
+.grid-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.8) 100%);
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 123, 255, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.grid-column:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+  border-color: rgba(0, 123, 255, 0.25);
+}
+
+.grid-column h4 {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #007bff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid rgba(0, 123, 255, 0.2);
+  padding-bottom: 8px;
+}
+
+.grid-column .column-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.grid-column .column-header .badge {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+}
+
+.grid-column .column-header .line {
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(0, 123, 255, 0.3), rgba(0, 123, 255, 0));
+}
+
+// Стили для карточки в сетке
+.participant-card {
+  background: white;
+  border: none;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.participant-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, #007bff, #0056b3);
+}
+
+.participant-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.participant-card h3 {
+  margin: 0 0 8px 0;
+  color: #2c3e50;
+  font-size: 18px;
+  font-weight: 700;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.participant-card p {
+  margin: 6px 0;
+  color: #5a6c7d;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.participant-card .performance-order {
+  display: inline-block;
+  background: #e3f2fd;
+  color: #1976d2;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.participant-card .actions {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+}
+
+.participant-card button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.participant-card button.edit-btn {
+  background: linear-gradient(135deg, #28a745, #20c997);
+  color: white;
+  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+}
+
+.participant-card button.edit-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+}
+
+.participant-card button.delete-btn {
+  background: linear-gradient(135deg, #dc3545, #fd7e14);
+  color: white;
+  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+}
+
+.participant-card button.delete-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+}
+
+// Стили для формы редактирования в карточке
+.edit-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 20px;
+  border-radius: 12px;
+  z-index: 10;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
+  overflow-y: auto;
+}
+
+.edit-overlay h4 {
+  margin-top: 0;
+  color: #2c3e50;
+  font-size: 18px;
+  margin-bottom: 15px;
+  font-weight: 700;
+  border-bottom: 2px solid rgba(0, 123, 255, 0.2);
+  padding-bottom: 10px;
+}
+
+.edit-overlay .form-input, .edit-overlay .form-textarea {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid rgba(0, 123, 255, 0.15);
+  border-radius: 6px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  font-family: inherit;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.edit-overlay .form-input:focus, .edit-overlay .form-textarea:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+  background: white;
+}
+
+.edit-overlay .save-btn {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #28a745, #20c997);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+}
+
+.edit-overlay .save-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(40, 167, 69, 0.4);
+  background: linear-gradient(135deg, #20c997, #17a2b8);
+}
+
+.edit-overlay .cancel-btn {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #6c757d, #495057);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+}
+
+.edit-overlay .cancel-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(108, 117, 125, 0.4);
+  background: linear-gradient(135deg, #495057, #343a40);
+}
+
+// Адаптивные стили для сетки
+@media (max-width: 1024px) {
+  .participants-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .participants-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .grid-column {
+    padding: 16px;
+    border-radius: 12px;
+  }
+  
+  .grid-column .participant-card {
+    min-width: auto;
+  }
+  
+  .edit-overlay {
+    padding: 15px;
+  }
+  
+  .edit-overlay .form-input, .edit-overlay .form-textarea {
+    padding: 8px;
+    font-size: 14px;
+  }
+  
+  .edit-overlay .save-btn, .edit-overlay .cancel-btn {
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .participants-grid {
+    gap: 16px;
+  }
+  
+  .grid-column {
+    padding: 12px;
+  }
+  
+  .participant-card {
+    padding: 12px;
+  }
+  
+  .participant-card h3 {
+    font-size: 16px;
+  }
+  
+  .edit-overlay {
+    padding: 10px;
+  }
+  
+  .edit-overlay .form-input, .edit-overlay .form-textarea {
+    padding: 6px;
+    font-size: 12px;
+  }
+  
+  .edit-overlay .save-btn, .edit-overlay .cancel-btn {
+    padding: 6px 12px;
+    font-size: 10px;
+  }
 }

@@ -43,39 +43,47 @@ const RegLog = ({
       
       {/* Форма входа/регистрации */}
       <div className="login-form">
-        {/* Поле ввода логина */}
-        <input
-          type="text"
-          placeholder="Имя пользователя"
-          value={username}
-          onChange={onUsernameChange}
-          disabled={loading}
-        />
-        
-        {/* Поле ввода пароля */}
-        <input
-          type="password"
-          placeholder="Пароль"
-          value={password}
-          onChange={onPasswordChange}
-          disabled={loading}
-        />
-        
-        {/* Поле подтверждения пароля (только для регистрации) */}
-        {!isLoginMode && (
+        <div className="form-group">
+          <label>Имя пользователя:</label>
+          <input
+            type="text"
+            value={username}
+            onChange={onUsernameChange}
+            disabled={loading}
+            placeholder="Введите имя пользователя"
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Пароль:</label>
           <input
             type="password"
-            placeholder="Подтвердите пароль"
-            value={confirmPassword}
-            onChange={onConfirmPasswordChange}
+            value={password}
+            onChange={onPasswordChange}
             disabled={loading}
+            placeholder="Введите пароль"
           />
+        </div>
+
+        {/* Поле подтверждения пароля (только для регистрации) */}
+        {!isLoginMode && (
+          <div className="form-group">
+            <label>Подтвердите пароль:</label>
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={onConfirmPasswordChange}
+              disabled={loading}
+              placeholder="Подтвердите пароль"
+            />
+          </div>
         )}
-        
+
         {/* Кнопка действия */}
-        <button 
+        <button
           onClick={isLoginMode ? onLogin : onRegister}
           disabled={loading}
+          className="submit-btn"
         >
           {loading ? 'Загрузка...' : (isLoginMode ? 'Войти' : 'Зарегистрироваться')}
         </button>

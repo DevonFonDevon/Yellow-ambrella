@@ -30,59 +30,96 @@ function AddParticipantForm({ onAddParticipant }) {
       lastName: lastName.trim(),
       creativeNumber: creativeNumber.trim(),
       phoneNumber: phoneNumber.trim(),
+      performanceOrder: performanceOrder.trim(),
+      directorNotes: directorNotes.trim(),
     };
     onAddParticipant(newParticipant); // передаем в App.addParticipant
     setFirstName('');
     setLastName('');
     setCreativeNumber('');
     setPhoneNumber('');
+    setPerformanceOrder('');
+    setDirectorNotes('');
     setErrors({});
   }
 
   return (
     <form onSubmit={handleSubmit} className="add-participant-form">
       <h2>Добавить участника</h2>
-      <div>
-        <label>Имя:</label>
-        <input
-          type="text"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-          required
-        />
-        {errors.firstName && <span className="error">{errors.firstName}</span>}
+      <div className="form-row">
+        <div className="form-group">
+          <label>Имя:</label>
+          <input
+            type="text"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            className={errors.firstName ? 'error' : ''}
+            placeholder="Введите имя участника"
+          />
+          {errors.firstName && <span className="error">{errors.firstName}</span>}
+        </div>
+        <div className="form-group">
+          <label>Фамилия:</label>
+          <input
+            type="text"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            className={errors.lastName ? 'error' : ''}
+            placeholder="Введите фамилию участника"
+          />
+          {errors.lastName && <span className="error">{errors.lastName}</span>}
+        </div>
+        <div className="form-group">
+          <label>Номер телефона:</label>
+          <input
+            type="tel"
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+            className={errors.phoneNumber ? 'error' : ''}
+            placeholder="+375 (XX) XXX-XX-XX"
+          />
+          {errors.phoneNumber && <span className="error">{errors.phoneNumber}</span>}
+        </div>
       </div>
-      <div>
-        <label>Фамилия:</label>
-        <input
-          type="text"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-          required
-        />
-        {errors.lastName && <span className="error">{errors.lastName}</span>}
+      <div className="form-row">
+        <div className="form-group">
+          <label>Творческий номер:</label>
+          <input
+            type="text"
+            value={creativeNumber}
+            onChange={(e) => setCreativeNumber(e.target.value)}
+            className={errors.creativeNumber ? 'error' : ''}
+            placeholder="Описание творческого номера"
+          />
+          {errors.creativeNumber && <span className="error">{errors.creativeNumber}</span>}
+        </div>
+        <div className="form-group">
+          <label>Порядок выступления:</label>
+          <input
+            type="number"
+            value={performanceOrder}
+            onChange={(e) => setPerformanceOrder(e.target.value)}
+            className={errors.performanceOrder ? 'error' : ''}
+            placeholder="Номер в программе"
+            min="1"
+          />
+          {errors.performanceOrder && <span className="error">{errors.performanceOrder}</span>}
+        </div>
       </div>
-      <div>
-        <label>Творческий номер:</label>
-        <input
-          type="text"
-          value={creativeNumber}
-          onChange={(e) => setCreativeNumber(e.target.value)}
-          required
-        />
-        {errors.creativeNumber && <span className="error">{errors.creativeNumber}</span>}
+      <div className="form-row">
+        <div className="form-group">
+          <label>Режиссерские заметки:</label>
+          <textarea
+            value={directorNotes}
+            onChange={(e) => setDirectorNotes(e.target.value)}
+            className={errors.directorNotes ? 'error' : ''}
+            placeholder="Заметки режиссера о участнике"
+            rows="3"
+          />
+          {errors.directorNotes && <span className="error">{errors.directorNotes}</span>}
+        </div>
       </div>
-      <div>
-        <label>Номер телефона:</label>
-        <input
-          type="tel"
-          value={phoneNumber}
-          onChange={(e) => setPhoneNumber(e.target.value)}
-          required
-        />
-        {errors.phoneNumber && <span className="error">{errors.phoneNumber}</span>}
-      </div>
-      <button type="submit">Добавить</button>
+      <button type="submit">Добавить участника</button>
     </form>
   );
 }
