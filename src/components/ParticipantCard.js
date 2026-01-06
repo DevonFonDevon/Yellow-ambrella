@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
 function ParticipantCard({ participant, onEdit, onDelete }) {
-  var [isEditing, setIsEditing] = useState(false);
-  var [editData, setEditData] = useState(participant);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editData, setEditData] = useState(participant);
 
   // сохраняем изменения (вызывает App.updateParticipant)
   function handleSave() {

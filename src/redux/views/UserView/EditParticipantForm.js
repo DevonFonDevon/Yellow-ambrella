@@ -4,10 +4,20 @@ import React, { useState } from 'react';
 import './form-styles.scss';
 
 /**
- * Компонент формы добавления участника для Redux версии
+ * Компонент формы редактирования участника для Redux версии
  * Использует локальное состояние и валидацию
  */
-const AddParticipantForm = ({ onAddParticipant, onDataChange, data }) => {
+const EditParticipantForm = ({ participant, onUpdateParticipant, onCancel }) => {
+  // Локальное состояние для данных участника
+  const [formData, setFormData] = useState({
+    firstName: participant.firstName || '',
+    lastName: participant.lastName || '',
+    creativeNumber: participant.creativeNumber || '',
+    phone: participant.phone || '',
+    performanceOrder: participant.performanceOrder || '',
+    directorNotes: participant.directorNotes || ''
+  });
+
   // Локальное состояние для ошибок валидации
   const [errors, setErrors] = useState({});
 
@@ -16,14 +26,32 @@ const AddParticipantForm = ({ onAddParticipant, onDataChange, data }) => {
    */
   const validateForm = () => {
     const newErrors = {};
-    if (!data.firstName.trim()) newErrors.firstName = 'Имя обязательно';
-    if (!data.lastName.trim()) newErrors.lastName = 'Фамилия обязательна';
-    if (!data.creativeNumber.trim()) newErrors.creativeNumber = 'Творческий номер обязателен';
-    if (!data.phone.trim()) newErrors.phone = 'Телефон обязателен';
-    else if (!/^\+?\d{10,15}$/.test(data.phone)) newErrors.phone = 'Неверный формат телефона';
+    if (!formData.firstName.trim()) newErrors.firstName = 'Имя обязательно';
+    if (!formData.lastName.trim()) newErrors.lastName = 'Фамилия обязательна';
+    if (!formData.creativeNumber.trim()) newErrors.creativeNumber = 'Творческий номер обязателен';
+    if (!formData.phone.trim()) newErrors.phone = 'Телефон обязателен';
+    else if (!/^\+?\d{10,15}$/.test(formData.phone)) newErrors.phone = 'Неверный формат телефона';
     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
+  };
+
+  /**
+   * Обработчик изменения данных формы
+   */
+  const handleInputChange = (field, value) => {
+    setFormData({
+      ...formData,
+      [field]: value
+    });
+    
+    // Очищаем ошибку для этого поля при вводе
+    if (errors[field]) {
+      setErrors({
+        ...errors,
+        [field]: null
+      });
+    }
   };
 
   /**
@@ -33,21 +61,21 @@ const AddParticipantForm = ({ onAddParticipant, onDataChange, data }) => {
     e.preventDefault();
     
     if (validateForm()) {
-      onAddParticipant();
+      onUpdateParticipant(participant.id, formData);
     }
   };
 
   return (
-    <div className="add-participant-form">
-      <h2>Добавить участника</h2>
+    <div className="edit-participant-form">
+      <h3>Редактировать участника</h3>
       <form onSubmit={handleSubmit}>
         <div className="form-row">
           <div className="form-group">
             <label>Имя:</label>
             <input
               type="text"
-              value={data.firstName}
-              onChange={(e) => onDataChange('firstName', e.target.value)}
+              value={formData.firstName}
+              onChange={(e) => handleInputChange('firstName', e.target.value)}
               className={errors.firstName ? 'error' : ''}
               placeholder="Введите имя"
             />
@@ -58,8 +86,8 @@ const AddParticipantForm = ({ onAddParticipant, onDataChange, data }) => {
             <label>Фамилия:</label>
             <input
               type="text"
-              value={data.lastName}
-              onChange={(e) => onDataChange('lastName', e.target.value)}
+              value={formData.lastName}
+              onChange={(e) => handleInputChange('lastName', e.target.value)}
               className={errors.lastName ? 'error' : ''}
               placeholder="Введите фамилию"
             />
@@ -72,8 +100,8 @@ const AddParticipantForm = ({ onAddParticipant, onDataChange, data }) => {
             <label>Творческий номер:</label>
             <input
               type="text"
-              value={data.creativeNumber}
-              onChange={(e) => onDataChange('creativeNumber', e.target.value)}
+              value={formData.creativeNumber}
+              onChange={(e) => handleInputChange('creativeNumber', e.target.value)}
               className={errors.creativeNumber ? 'error' : ''}
               placeholder="Описание творческого номера"
             />
@@ -84,8 +112,8 @@ const AddParticipantForm = ({ onAddParticipant, onDataChange, data }) => {
             <label>Телефон:</label>
             <input
               type="tel"
-              value={data.phone}
-              onChange={(e) => onDataChange('phone', e.target.value)}
+              value={formData.phone}
+              onChange={(e) => handleInputChange('phone', e.target.value)}
               className={errors.phone ? 'error' : ''}
               placeholder="Введите телефон"
             />
@@ -98,8 +126,8 @@ const AddParticipantForm = ({ onAddParticipant, onDataChange, data }) => {
             <label>Порядок выступления:</label>
             <input
               type="number"
-              value={data.performanceOrder || ''}
-              onChange={(e) => onDataChange('performanceOrder', e.target.value)}
+              value={formData.performanceOrder}
+              onChange={(e) => handleInputChange('performanceOrder', e.target.value)}
               className={errors.performanceOrder ? 'error' : ''}
               placeholder="Номер в программе"
               min="1"
@@ -110,8 +138,8 @@ const AddParticipantForm = ({ onAddParticipant, onDataChange, data }) => {
           <div className="form-group">
             <label>Режиссерские заметки:</label>
             <textarea
-              value={data.directorNotes || ''}
-              onChange={(e) => onDataChange('directorNotes', e.target.value)}
+              value={formData.directorNotes}
+              onChange={(e) => handleInputChange('directorNotes', e.target.value)}
               className={errors.directorNotes ? 'error' : ''}
               placeholder="Заметки режиссера о участнике"
               rows="3"
@@ -120,12 +148,21 @@ const AddParticipantForm = ({ onAddParticipant, onDataChange, data }) => {
           </div>
         </div>
 
-        <button type="submit" className="submit-btn">
-          Добавить участника
-        </button>
+        <div className="form-actions">
+          <button type="submit" className="submit-btn">
+            Сохранить изменения
+          </button>
+          <button 
+            type="button" 
+            className="cancel-btn"
+            onClick={onCancel}
+          >
+            Отмена
+          </button>
+        </div>
       </form>
     </div>
   );
 };
 
-export default AddParticipantForm;
+export default EditParticipantForm;

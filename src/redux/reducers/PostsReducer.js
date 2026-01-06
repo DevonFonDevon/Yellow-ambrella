@@ -22,9 +22,17 @@ const postsReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_PARTICIPANT:
       // Добавляем нового участника с уникальным ID
+      // Устанавливаем дефолтные значения для новых полей
+      const newParticipant = {
+        ...action.payload,
+        id: state.nextId,
+        performanceOrder: action.payload.performanceOrder || null,
+        directorNotes: action.payload.directorNotes || ''
+      };
+      
       return {
         ...state,
-        participants: [...state.participants, { ...action.payload, id: state.nextId }],
+        participants: [...state.participants, newParticipant],
         nextId: state.nextId + 1
       };
 

@@ -9,7 +9,7 @@ function AddParticipantForm({ onAddParticipant }) {
 
   // валидация формы
   function validateForm() {
-    var newErrors = {};
+    const newErrors = {};
     if (!firstName.trim()) newErrors.firstName = 'Имя обязательно';
     if (!lastName.trim()) newErrors.lastName = 'Фамилия обязательна';
     if (!creativeNumber.trim()) newErrors.creativeNumber = 'Творческий номер обязателен';
@@ -20,7 +20,7 @@ function AddParticipantForm({ onAddParticipant }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    var validationErrors = validateForm();
+    const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;

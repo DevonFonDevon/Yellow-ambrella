@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 // Импортируем actions
 import { addParticipant, updateParticipant, deleteParticipant } from '../../Actions/PostActions';
 // Импортируем компоненты
-import ParticipantCard from '../../../components/ParticipantCard';
+import ParticipantCard from './ParticipantCard';
 import AddParticipantForm from './AddParticipantForm';
-import ParticipantTable from '../../../components/ParticipantTable';
+import ParticipantTable from './ParticipantTable';
 // Импортируем стили
 import './styles.scss';
 import './form-styles.scss';
