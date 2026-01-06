@@ -86,14 +86,27 @@ const UserViewContainer = () => {
       />
       
       <div className="participants-list">
-        {participants.map((participant) => (
-          <ParticipantCard
-            key={participant.id}
-            participant={participant}
-            onEdit={handleUpdateParticipant}
-            onDelete={handleDeleteParticipant}
-          />
-        ))}
+        {participants
+          .slice()
+          .sort((a, b) => {
+            // Сначала сортируем по порядку выступления
+            if (a.performanceOrder && b.performanceOrder) {
+              return a.performanceOrder - b.performanceOrder;
+            }
+            // Участники с указанным порядком выступления идут первыми
+            if (a.performanceOrder && !b.performanceOrder) return -1;
+            if (!a.performanceOrder && b.performanceOrder) return 1;
+            // Если порядок не указан у обоих, сортируем по ID
+            return a.id - b.id;
+          })
+          .map((participant) => (
+            <ParticipantCard
+              key={participant.id}
+              participant={participant}
+              onEdit={handleUpdateParticipant}
+              onDelete={handleDeleteParticipant}
+            />
+          ))}
       </div>
       
     </div>
