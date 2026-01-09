@@ -3,13 +3,17 @@ import {
   ADD_PARTICIPANT,
   UPDATE_PARTICIPANT,
   DELETE_PARTICIPANT,
-  SET_PARTICIPANTS
+  SET_PARTICIPANTS,
+  SET_PARTICIPANTS_LOADING,
+  SET_PARTICIPANTS_ERROR
 } from '../Actions/ActionTypes';
 
 // Начальное состояние для участников
 const initialState = {
   participants: [],
-  nextId: 1
+  nextId: 1,
+  loading: false,
+  error: null
 };
 
 /**
@@ -60,7 +64,22 @@ const postsReducer = (state = initialState, action) => {
       // Устанавливаем список участников
       return {
         ...state,
-        participants: action.payload
+        participants: action.payload,
+        nextId: action.payload.reduce((maxId, participant) => Math.max(maxId, participant.id || 0), 0) + 1,
+        error: null
+      };
+
+    case SET_PARTICIPANTS_LOADING:
+      return {
+        ...state,
+        loading: action.payload
+      };
+
+    case SET_PARTICIPANTS_ERROR:
+      return {
+        ...state,
+        error: action.payload,
+        loading: false
       };
 
     default:

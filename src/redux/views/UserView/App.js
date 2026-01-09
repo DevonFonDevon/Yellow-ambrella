@@ -1,5 +1,5 @@
 // Импортируем React и хуки Redux
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -15,7 +15,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 // Импортируем actions
-import { addParticipant, updateParticipant, deleteParticipant } from '../../Actions/PostActions';
+import { addParticipant, updateParticipant, deleteParticipant, fetchParticipants } from '../../Actions/PostActions';
 import { logoutUser } from '../../Actions/UserActions';
 // Импортируем хук темы
 import { useTheme } from '../../../contexts/ThemeContext';
@@ -33,7 +33,7 @@ import './form-styles.scss';
 const UserViewContainer = ({ currentUser }) => {
   // Используем хук для получения состояния из Redux
   const dispatch = useDispatch();
-  const { participants } = useSelector(state => state.posts);
+  const { participants, loading: participantsLoading, error: participantsError } = useSelector(state => state.posts);
 
   // Используем хук темы
   const { theme, toggleTheme } = useTheme();
@@ -42,6 +42,10 @@ const UserViewContainer = ({ currentUser }) => {
   const [showForm, setShowForm] = useState(false);
   // Состояние для набора колонок
   const [columnLayoutInput, setColumnLayoutInput] = useState('3,3,3');
+
+  useEffect(() => {
+    dispatch(fetchParticipants());
+  }, [dispatch]);
 
   /**
    * Обработчик добавления участника
@@ -156,12 +160,26 @@ const UserViewContainer = ({ currentUser }) => {
       )}
 
       <Box>
-        <ParticipantGrid
-          participants={participants}
-          onEdit={handleUpdateParticipant}
-          onDelete={handleDeleteParticipant}
-          columnLayout={columnLayout}
-        />
+        {participantsLoading && (
+          <Paper className="program-info" elevation={0} sx={{ p: 2, mb: 2, border: '1px dashed', borderColor: 'divider' }}>
+            <Typography variant="body2">Загрузка данных участников...</Typography>
+          </Paper>
+        )}
+        {participantsError && (
+          <Paper className="program-info" elevation={0} sx={{ p: 2, mb: 2, border: '1px dashed', borderColor: 'divider' }}>
+            <Typography variant="body2" color="error">
+              {participantsError}
+            </Typography>
+          </Paper>
+        )}
+        {!participantsLoading && (
+          <ParticipantGrid
+            participants={participants}
+            onEdit={handleUpdateParticipant}
+            onDelete={handleDeleteParticipant}
+            columnLayout={columnLayout}
+          />
+        )}
       </Box>
 
     </div>
