@@ -38,16 +38,6 @@ const UserViewContainer = () => {
   // Используем хук темы
   const { theme, toggleTheme } = useTheme();
 
-  // Локальное состояние для формы добавления
-  const [newParticipantData, setNewParticipantData] = useState({
-    firstName: '',
-    creativeNumber: '',
-    phone: '',
-    performanceOrder: '',
-    directorNotes: '',
-    duration: ''
-  });
-
   // Состояние для показа формы
   const [showForm, setShowForm] = useState(false);
   // Состояние для набора колонок
@@ -56,23 +46,8 @@ const UserViewContainer = () => {
   /**
    * Обработчик добавления участника
    */
-  const handleAddParticipant = () => {
-    // Валидация происходит в компоненте формы
-    // Если форма валидна, данные уже в newParticipantData
-    if (newParticipantData.firstName && newParticipantData.creativeNumber && newParticipantData.phone) {
-      // Отправляем action в Redux
-      dispatch(addParticipant(newParticipantData));
-      
-      // Очищаем форму только после успешного добавления
-      setNewParticipantData({
-        firstName: '',
-        creativeNumber: '',
-        phone: '',
-        performanceOrder: '',
-        directorNotes: '',
-        duration: ''
-      });
-    }
+  const handleAddParticipant = (participantData) => {
+    dispatch(addParticipant(participantData));
   };
 
   /**
@@ -89,16 +64,6 @@ const UserViewContainer = () => {
     if (window.confirm('Вы уверены, что хотите удалить этого участника?')) {
       dispatch(deleteParticipant(id));
     }
-  };
-
-  /**
-   * Обработчик изменения данных формы
-   */
-  const handleFormChange = (field, value) => {
-    setNewParticipantData({
-      ...newParticipantData,
-      [field]: value
-    });
   };
 
   /**
@@ -182,8 +147,6 @@ const UserViewContainer = () => {
       {showForm && (
         <AddParticipantForm
           onAddParticipant={handleAddParticipant}
-          onDataChange={handleFormChange}
-          data={newParticipantData}
         />
       )}
 
