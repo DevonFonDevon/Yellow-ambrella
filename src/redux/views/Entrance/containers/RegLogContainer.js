@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 // Импортируем actions
-import { loginUser, registerUser } from '../../../Actions/UserActions';
+import { loginUser, registerUser, clearAuthError, setAuthError } from '../../../Actions/UserActions';
 // Импортируем компонент представления
 import RegLog from '../components/RegLog';
 
@@ -26,7 +26,7 @@ const RegLogContainer = () => {
    */
   const handleLogin = () => {
     if (!username || !password) {
-      alert('Пожалуйста, заполните все поля');
+      dispatch(setAuthError('Пожалуйста, заполните логин и пароль'));
       return;
     }
 
@@ -39,17 +39,17 @@ const RegLogContainer = () => {
    */
   const handleRegister = () => {
     if (!username || !password || !confirmPassword) {
-      alert('Пожалуйста, заполните все поля');
+      dispatch(setAuthError('Пожалуйста, заполните все поля'));
       return;
     }
 
     if (password !== confirmPassword) {
-      alert('Пароли не совпадают');
+      dispatch(setAuthError('Пароли не совпадают'));
       return;
     }
 
     if (password.length < 6) {
-      alert('Пароль должен быть не менее 6 символов');
+      dispatch(setAuthError('Пароль должен быть не менее 6 символов'));
       return;
     }
 
@@ -70,6 +70,7 @@ const RegLogContainer = () => {
     setUsername('');
     setPassword('');
     setConfirmPassword('');
+    dispatch(clearAuthError());
   };
 
   return (

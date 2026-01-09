@@ -1,6 +1,6 @@
 // Импортируем React и хуки Redux
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ThemeProvider as MuiThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
@@ -15,14 +15,20 @@ import { RegLogContainer } from './redux/views/Entrance/containers';
 import UserViewContainer from './redux/views/UserView/App';
 // Импортируем стили
 import './App.css';
+import { initializeAuth } from './redux/Actions/UserActions';
 
 /**
  * Главный компонент приложения с Redux
  */
 function App() {
   // Используем хук для получения состояния аутентификации из Redux
+  const dispatch = useDispatch();
   const { isAuthenticated, loading } = useSelector(state => state.auth);
   const { theme: appTheme } = useAppTheme();
+
+  React.useEffect(() => {
+    dispatch(initializeAuth());
+  }, [dispatch]);
 
   const muiTheme = React.useMemo(() => {
     return createTheme({

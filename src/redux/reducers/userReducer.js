@@ -4,7 +4,9 @@ import {
   LOGOUT_USER,
   REGISTER_USER,
   SET_CURRENT_USER,
-  CLEAR_AUTH_ERROR
+  CLEAR_AUTH_ERROR,
+  SET_AUTH_ERROR,
+  SET_AUTH_LOADING
 } from '../Actions/ActionTypes';
 
 // Начальное состояние для пользователя
@@ -65,6 +67,21 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         error: null
+      };
+
+    case SET_AUTH_ERROR:
+      // Устанавливаем сообщение об ошибке аутентификации
+      return {
+        ...state,
+        error: action.payload,
+        loading: false
+      };
+
+    case SET_AUTH_LOADING:
+      // Управляем состоянием загрузки
+      return {
+        ...state,
+        loading: action.payload
       };
 
     default:
