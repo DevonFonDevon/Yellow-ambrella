@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
+import TextField from '@mui/material/TextField';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
@@ -49,6 +50,8 @@ const UserViewContainer = () => {
 
   // Состояние для показа формы
   const [showForm, setShowForm] = useState(false);
+  // Состояние для набора колонок
+  const [columnLayoutInput, setColumnLayoutInput] = useState('3,3,3');
 
   /**
    * Обработчик добавления участника
@@ -119,6 +122,14 @@ const UserViewContainer = () => {
   };
 
   const totalTime = calculateTotalTime();
+  const columnLayout = columnLayoutInput
+    .split(',')
+    .map((value) => Number.parseInt(value.trim(), 10))
+    .filter((value) => Number.isFinite(value) && value > 0);
+  const columnSlots = columnLayout.reduce((sum, value) => sum + value, 0);
+  const layoutHint = columnLayout.length
+    ? `Сумма мест: ${columnSlots}. Если участников больше, добавятся новые колонки по ${columnLayout[columnLayout.length - 1]} мест.`
+    : 'Введите размеры колонок через запятую, например 3,3,4.';
 
   return (
     <div className="app">
@@ -151,6 +162,23 @@ const UserViewContainer = () => {
         </Typography>
       </Paper>
 
+      <Paper className="column-controls" elevation={0} sx={{ p: 2, mt: 2, mb: 2, border: '1px dashed', borderColor: 'divider' }}>
+        <Typography variant="subtitle1" sx={{ mb: 1 }}>
+          Настройка колонок
+        </Typography>
+        <Box className="column-controls__content">
+          <TextField
+            label="Набор колонок"
+            value={columnLayoutInput}
+            size="small"
+            onChange={(event) => setColumnLayoutInput(event.target.value)}
+            helperText={layoutHint}
+            placeholder="3,3,4"
+            fullWidth
+          />
+        </Box>
+      </Paper>
+
       {showForm && (
         <AddParticipantForm
           onAddParticipant={handleAddParticipant}
@@ -164,6 +192,7 @@ const UserViewContainer = () => {
           participants={participants}
           onEdit={handleUpdateParticipant}
           onDelete={handleDeleteParticipant}
+          columnLayout={columnLayout}
         />
       </Box>
 

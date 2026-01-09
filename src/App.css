@@ -1,43 +1,4 @@
 .App {
-<<<<<<< HEAD
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-=======
   font-family: Arial, sans-serif;
   max-width: 800px;
   margin: 0 auto;
@@ -56,7 +17,7 @@
    margin: 0;
    text-align: left;
    color: var(--text-color);
- }
+  }
 
 /* Стили для кнопки выхода */
 .logout-btn {
@@ -67,12 +28,12 @@
    border-radius: 4px;
    cursor: pointer;
    font-size: 14px;
- }
+  }
 
- .logout-btn:hover {
+  .logout-btn:hover {
    background: var(--gradient-danger);
    filter: brightness(0.9);
- }
+  }
 
 h1 {
   text-align: center;
@@ -88,13 +49,13 @@ h1 {
    box-shadow: 0 8px 32px var(--shadow);
    backdrop-filter: blur(10px);
    transition: all 0.3s ease;
- }
+  }
 
- .add-participant-form:hover {
+  .add-participant-form:hover {
    transform: translateY(-2px);
    box-shadow: 0 12px 40px var(--shadow-hover);
    border-color: rgba(0, 123, 255, 0.25);
- }
+  }
 
 .add-participant-form h2 {
   margin-top: 0;
@@ -264,15 +225,14 @@ h1 {
    padding: 15px;
    border-radius: 4px;
    background: var(--card-bg);
- }
+  }
 
- .participant-card h3 {
+  .participant-card h3 {
    margin-top: 0;
    color: var(--text-color);
- }
+  }
 
- .participant-card p {
+  .participant-card p {
    margin: 5px 0;
    color: var(--muted-color);
- }
->>>>>>> redux-implementation
+  }

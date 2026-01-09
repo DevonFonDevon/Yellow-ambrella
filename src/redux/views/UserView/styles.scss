@@ -25,6 +25,18 @@
   color: var(--text-color);
 }
 
+.column-controls {
+  background: var(--card-bg);
+  border-radius: 12px;
+  border: 1px solid rgba(0, 123, 255, 0.2);
+}
+
+.column-controls__content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
 .header-actions {
   display: flex;
   gap: 15px;
@@ -281,6 +293,35 @@ h1 {
   align-items: center;
   gap: 8px;
   margin-bottom: 12px;
+}
+
+.grid-column .column-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 120px;
+}
+
+.grid-column .column-meter {
+  position: relative;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(0, 123, 255, 0.15);
+  overflow: hidden;
+}
+
+.grid-column .column-meter span {
+  position: absolute;
+  inset: 0;
+  width: 0;
+  background: linear-gradient(90deg, #6f42c1, #2f80ed);
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+.grid-column--hot {
+  border-color: rgba(255, 193, 7, 0.5);
+  box-shadow: 0 12px 40px rgba(255, 193, 7, 0.15);
 }
 
 .grid-column .column-header .badge {

@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 :root {
   /* Светлая тема */
   --bg-color: #f8f9fa;
@@ -56,7 +54,6 @@ body.dark-theme {
   --gradient-muted: linear-gradient(135deg, #778899, #696969);
 }
 
->>>>>>> redux-implementation
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -64,12 +61,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-<<<<<<< HEAD
-=======
   transition: background-color 0.3s ease, color 0.3s ease;
   background-color: var(--bg-color);
   color: var(--text-color);
->>>>>>> redux-implementation
 }
 
 code {
