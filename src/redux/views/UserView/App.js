@@ -1,0 +1,174 @@
+// Импортируем React и хуки Redux
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import Paper from '@mui/material/Paper';
+import Toolbar from '@mui/material/Toolbar';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
+import LogoutIcon from '@mui/icons-material/Logout';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+// Импортируем actions
+import { addParticipant, updateParticipant, deleteParticipant } from '../../Actions/PostActions';
+import { logoutUser } from '../../Actions/UserActions';
+// Импортируем хук темы
+import { useTheme } from '../../../contexts/ThemeContext';
+// Импортируем компоненты
+import AddParticipantForm from './AddParticipantForm';
+import ParticipantGrid from './ParticipantGrid';
+// Импортируем стили
+import './styles.scss';
+import './form-styles.scss';
+
+/**
+ * Контейнер для основного приложения с участниками
+ * Подключает компонент к Redux store
+ */
+const UserViewContainer = () => {
+  // Используем хук для получения состояния из Redux
+  const dispatch = useDispatch();
+  const { participants } = useSelector(state => state.posts);
+
+  // Используем хук темы
+  const { theme, toggleTheme } = useTheme();
+
+  // Локальное состояние для формы добавления
+  const [newParticipantData, setNewParticipantData] = useState({
+    firstName: '',
+    creativeNumber: '',
+    phone: '',
+    performanceOrder: '',
+    directorNotes: '',
+    duration: ''
+  });
+
+  // Состояние для показа формы
+  const [showForm, setShowForm] = useState(false);
+
+  /**
+   * Обработчик добавления участника
+   */
+  const handleAddParticipant = () => {
+    // Валидация происходит в компоненте формы
+    // Если форма валидна, данные уже в newParticipantData
+    if (newParticipantData.firstName && newParticipantData.creativeNumber && newParticipantData.phone) {
+      // Отправляем action в Redux
+      dispatch(addParticipant(newParticipantData));
+      
+      // Очищаем форму только после успешного добавления
+      setNewParticipantData({
+        firstName: '',
+        creativeNumber: '',
+        phone: '',
+        performanceOrder: '',
+        directorNotes: '',
+        duration: ''
+      });
+    }
+  };
+
+  /**
+   * Обработчик изменения данных участника
+   */
+  const handleUpdateParticipant = (id, updatedData) => {
+    dispatch(updateParticipant(id, updatedData));
+  };
+
+  /**
+   * Обработчик удаления участника
+   */
+  const handleDeleteParticipant = (id) => {
+    if (window.confirm('Вы уверены, что хотите удалить этого участника?')) {
+      dispatch(deleteParticipant(id));
+    }
+  };
+
+  /**
+   * Обработчик изменения данных формы
+   */
+  const handleFormChange = (field, value) => {
+    setNewParticipantData({
+      ...newParticipantData,
+      [field]: value
+    });
+  };
+
+  /**
+   * Обработчик выхода
+   */
+  const handleLogout = () => {
+    dispatch(logoutUser());
+  };
+
+  /**
+   * Подсчет общего времени программы
+   */
+  const calculateTotalTime = () => {
+    const totalMinutes = participants.reduce((sum, participant) => {
+      const duration = parseInt(participant.duration) || 0;
+      return sum + duration;
+    }, 0);
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+    return { hours, minutes, totalMinutes };
+  };
+
+  const totalTime = calculateTotalTime();
+
+  return (
+    <div className="app">
+      <AppBar position="static" color="default" elevation={1} className="app-header">
+        <Toolbar sx={{ gap: 2, flexWrap: 'wrap' }}>
+          <Typography variant="h5" sx={{ flexGrow: 1 }}>
+            Участники концертной программы
+          </Typography>
+          <Button
+            variant="contained"
+            startIcon={<PersonAddAlt1Icon />}
+            onClick={() => setShowForm(!showForm)}
+          >
+            {showForm ? 'Скрыть форму' : 'Добавить участника'}
+          </Button>
+          <Tooltip title={theme === 'light' ? 'Темная тема' : 'Светлая тема'}>
+            <IconButton onClick={toggleTheme} color="primary">
+              {theme === 'light' ? <Brightness4Icon /> : <Brightness7Icon />}
+            </IconButton>
+          </Tooltip>
+          <Button variant="outlined" color="error" startIcon={<LogoutIcon />} onClick={handleLogout}>
+            Выход
+          </Button>
+        </Toolbar>
+      </AppBar>
+
+      <Paper className="program-info" elevation={0} sx={{ p: 2, mt: 2, mb: 2, border: '1px dashed', borderColor: 'divider' }}>
+        <Typography variant="body1">
+          Общее время программы: {totalTime.hours} ч {totalTime.minutes} мин ({totalTime.totalMinutes} мин)
+        </Typography>
+      </Paper>
+
+      {showForm && (
+        <AddParticipantForm
+          onAddParticipant={handleAddParticipant}
+          onDataChange={handleFormChange}
+          data={newParticipantData}
+        />
+      )}
+
+      <Box>
+        <ParticipantGrid
+          participants={participants}
+          onEdit={handleUpdateParticipant}
+          onDelete={handleDeleteParticipant}
+        />
+      </Box>
+
+    </div>
+  );
+};
+
+export default UserViewContainer;

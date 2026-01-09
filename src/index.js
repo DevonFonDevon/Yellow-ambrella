@@ -1,13 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+<<<<<<< HEAD
 import './index.css';
 import App from './App';
+=======
+import { Provider } from 'react-redux';
+import { ThemeProvider } from './contexts/ThemeContext';
+import './index.css';
+import App from './App';
+import store from './redux/store';
+>>>>>>> redux-implementation
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+<<<<<<< HEAD
     <App />
+=======
+    {/* Оборачиваем приложение в Provider для доступа к Redux store */}
+    <Provider store={store}>
+      <ThemeProvider>
+        <App />
+      </ThemeProvider>
+    </Provider>
+>>>>>>> redux-implementation
   </React.StrictMode>
 );
 
