@@ -8,6 +8,7 @@ import {
   SET_AUTH_ERROR,
   SET_AUTH_LOADING
 } from './ActionTypes';
+import { USER_ACCOUNT_TEMPLATE } from '../constants/accountSchema';
 
 const USERS_STORAGE_KEY = 'users';
 const CURRENT_USER_KEY = 'currentUser';
@@ -91,6 +92,7 @@ export const registerUser = (userData) => {
     }
 
     const newUser = {
+      ...USER_ACCOUNT_TEMPLATE,
       id: Date.now().toString(),
       username: userData.username,
       password: userData.password,

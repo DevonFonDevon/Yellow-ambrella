@@ -23,12 +23,17 @@ import { initializeAuth } from './redux/Actions/UserActions';
 function App() {
   // Используем хук для получения состояния аутентификации из Redux
   const dispatch = useDispatch();
-  const { isAuthenticated, loading } = useSelector(state => state.auth);
+  const { isAuthenticated, loading, currentUser } = useSelector(state => state.auth);
   const { theme: appTheme } = useAppTheme();
+  const [rootUser, setRootUser] = React.useState(null);
 
   React.useEffect(() => {
     dispatch(initializeAuth());
   }, [dispatch]);
+
+  React.useEffect(() => {
+    setRootUser(currentUser);
+  }, [currentUser]);
 
   const muiTheme = React.useMemo(() => {
     return createTheme({
@@ -80,7 +85,7 @@ function App() {
             path="/"
             element={
               isAuthenticated ? (
-                <UserViewContainer />
+                <UserViewContainer currentUser={rootUser} />
               ) : (
                 <Navigate to="/login" replace />
               )

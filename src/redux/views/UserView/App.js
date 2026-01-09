@@ -30,7 +30,7 @@ import './form-styles.scss';
  * Контейнер для основного приложения с участниками
  * Подключает компонент к Redux store
  */
-const UserViewContainer = () => {
+const UserViewContainer = ({ currentUser }) => {
   // Используем хук для получения состояния из Redux
   const dispatch = useDispatch();
   const { participants } = useSelector(state => state.posts);
@@ -103,6 +103,11 @@ const UserViewContainer = () => {
           <Typography variant="h5" sx={{ flexGrow: 1 }}>
             Участники концертной программы
           </Typography>
+          {currentUser && (
+            <Typography variant="body2" color="text.secondary" sx={{ mr: 1 }}>
+              Пользователь: {currentUser.username}
+            </Typography>
+          )}
           <Button
             variant="contained"
             startIcon={<PersonAddAlt1Icon />}
