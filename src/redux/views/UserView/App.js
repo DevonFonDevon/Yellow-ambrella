@@ -1,9 +1,23 @@
 // Импортируем React и хуки Redux
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import Paper from '@mui/material/Paper';
+import Toolbar from '@mui/material/Toolbar';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
+import LogoutIcon from '@mui/icons-material/Logout';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 // Импортируем actions
 import { addParticipant, updateParticipant, deleteParticipant } from '../../Actions/PostActions';
 import { logoutUser } from '../../Actions/UserActions';
+// Импортируем хук темы
+import { useTheme } from '../../../contexts/ThemeContext';
 // Импортируем компоненты
 import AddParticipantForm from './AddParticipantForm';
 import ParticipantGrid from './ParticipantGrid';
@@ -19,6 +33,9 @@ const UserViewContainer = () => {
   // Используем хук для получения состояния из Redux
   const dispatch = useDispatch();
   const { participants } = useSelector(state => state.posts);
+
+  // Используем хук темы
+  const { theme, toggleTheme } = useTheme();
 
   // Локальное состояние для формы добавления
   const [newParticipantData, setNewParticipantData] = useState({
@@ -105,19 +122,34 @@ const UserViewContainer = () => {
 
   return (
     <div className="app">
-      <div className="app-header">
-        <h1>Участники концертной программы</h1>
-        <div className="header-actions">
-          <button onClick={() => setShowForm(!showForm)} className="add-participant-btn">
+      <AppBar position="static" color="default" elevation={1} className="app-header">
+        <Toolbar sx={{ gap: 2, flexWrap: 'wrap' }}>
+          <Typography variant="h5" sx={{ flexGrow: 1 }}>
+            Участники концертной программы
+          </Typography>
+          <Button
+            variant="contained"
+            startIcon={<PersonAddAlt1Icon />}
+            onClick={() => setShowForm(!showForm)}
+          >
             {showForm ? 'Скрыть форму' : 'Добавить участника'}
-          </button>
-          <button onClick={handleLogout} className="logout-btn">Выход</button>
-        </div>
-      </div>
+          </Button>
+          <Tooltip title={theme === 'light' ? 'Темная тема' : 'Светлая тема'}>
+            <IconButton onClick={toggleTheme} color="primary">
+              {theme === 'light' ? <Brightness4Icon /> : <Brightness7Icon />}
+            </IconButton>
+          </Tooltip>
+          <Button variant="outlined" color="error" startIcon={<LogoutIcon />} onClick={handleLogout}>
+            Выход
+          </Button>
+        </Toolbar>
+      </AppBar>
 
-      <div className="program-info">
-        <p>Общее время программы: {totalTime.hours} ч {totalTime.minutes} мин ({totalTime.totalMinutes} мин)</p>
-      </div>
+      <Paper className="program-info" elevation={0} sx={{ p: 2, mt: 2, mb: 2, border: '1px dashed', borderColor: 'divider' }}>
+        <Typography variant="body1">
+          Общее время программы: {totalTime.hours} ч {totalTime.minutes} мин ({totalTime.totalMinutes} мин)
+        </Typography>
+      </Paper>
 
       {showForm && (
         <AddParticipantForm
@@ -127,11 +159,13 @@ const UserViewContainer = () => {
         />
       )}
 
-      <ParticipantGrid
-        participants={participants}
-        onEdit={handleUpdateParticipant}
-        onDelete={handleDeleteParticipant}
-      />
+      <Box>
+        <ParticipantGrid
+          participants={participants}
+          onEdit={handleUpdateParticipant}
+          onDelete={handleDeleteParticipant}
+        />
+      </Box>
 
     </div>
   );

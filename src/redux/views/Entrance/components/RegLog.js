@@ -1,5 +1,12 @@
 // Импортируем React
 import React from 'react';
+import Alert from '@mui/material/Alert';
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 // Импортируем стили
 import './styles.scss';
 
@@ -22,88 +29,87 @@ const RegLog = ({
   onToggleMode
 }) => {
   return (
-    <div className="login-page">
-      {/* Заголовок страницы */}
-      <h1>{isLoginMode ? 'Добро пожаловать' : 'Создание аккаунта'}</h1>
-      
-      {/* Подзаголовок с инструкцией */}
-      <p>
-        {isLoginMode 
-          ? 'Введите логин и пароль, чтобы начать' 
-          : 'Заполните форму для создания нового аккаунта'
-        }
-      </p>
+    <Container maxWidth="sm" className="login-page">
+      <Paper elevation={6} sx={{ p: 4, mt: 6 }}>
+        <Stack spacing={2}>
+          <Typography variant="h4" component="h1">
+            {isLoginMode ? 'Добро пожаловать' : 'Создание аккаунта'}
+          </Typography>
 
-      {/* Отображаем ошибку, если есть */}
-      {error && (
-        <div className="error-message">
-          {error}
-        </div>
-      )}
-      
-      {/* Форма входа/регистрации */}
-      <div className="login-form">
-        <div className="form-group">
-          <label>Имя пользователя:</label>
-          <input
-            type="text"
-            value={username}
-            onChange={onUsernameChange}
-            disabled={loading}
-            placeholder="Введите имя пользователя"
-          />
-        </div>
+          <Typography variant="body1" color="text.secondary">
+            {isLoginMode 
+              ? 'Введите логин и пароль, чтобы начать' 
+              : 'Заполните форму для создания нового аккаунта'
+            }
+          </Typography>
 
-        <div className="form-group">
-          <label>Пароль:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={onPasswordChange}
-            disabled={loading}
-            placeholder="Введите пароль"
-          />
-        </div>
+          {error && (
+            <Alert severity="error">
+              {error}
+            </Alert>
+          )}
 
-        {/* Поле подтверждения пароля (только для регистрации) */}
-        {!isLoginMode && (
-          <div className="form-group">
-            <label>Подтвердите пароль:</label>
-            <input
-              type="password"
-              value={confirmPassword}
-              onChange={onConfirmPasswordChange}
+          <Stack spacing={2}>
+            <TextField
+              label="Имя пользователя"
+              value={username}
+              onChange={onUsernameChange}
               disabled={loading}
-              placeholder="Подтвердите пароль"
+              placeholder="Введите имя пользователя"
+              fullWidth
             />
-          </div>
-        )}
 
-        {/* Кнопка действия */}
-        <button
-          onClick={isLoginMode ? onLogin : onRegister}
-          disabled={loading}
-          className="submit-btn"
-        >
-          {loading ? 'Загрузка...' : (isLoginMode ? 'Войти' : 'Зарегистрироваться')}
-        </button>
-      </div>
-      
-      {/* Ссылка для переключения между формами */}
-      <p className="signup-link">
-        {isLoginMode 
-          ? 'Нет аккаунта? ' 
-          : 'Уже есть аккаунт? '
-        }
-        <button 
-          className="toggle-mode-btn" 
-          onClick={onToggleMode}
-          disabled={loading}
-        >
-          {isLoginMode ? 'Создать аккаунт' : 'Войти'}
-        </button>
-      </p>
-    </div>
+            <TextField
+              label="Пароль"
+              type="password"
+              value={password}
+              onChange={onPasswordChange}
+              disabled={loading}
+              placeholder="Введите пароль"
+              fullWidth
+            />
+
+            {!isLoginMode && (
+              <TextField
+                label="Подтвердите пароль"
+                type="password"
+                value={confirmPassword}
+                onChange={onConfirmPasswordChange}
+                disabled={loading}
+                placeholder="Подтвердите пароль"
+                fullWidth
+              />
+            )}
+
+            <Button
+              variant="contained"
+              size="large"
+              onClick={isLoginMode ? onLogin : onRegister}
+              disabled={loading}
+            >
+              {loading ? 'Загрузка...' : (isLoginMode ? 'Войти' : 'Зарегистрироваться')}
+            </Button>
+          </Stack>
+
+          <Stack direction="row" spacing={1} alignItems="center">
+            <Typography variant="body2">
+              {isLoginMode 
+                ? 'Нет аккаунта?' 
+                : 'Уже есть аккаунт?'
+              }
+            </Typography>
+            <Button
+              variant="text"
+              onClick={onToggleMode}
+              disabled={loading}
+              className="toggle-mode-btn"
+            >
+              {isLoginMode ? 'Создать аккаунт' : 'Войти'}
+            </Button>
+          </Stack>
+        </Stack>
+      </Paper>
+    </Container>
   );
 };
 

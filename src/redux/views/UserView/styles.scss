@@ -15,14 +15,14 @@
 }
 
 .program-info {
-  background: linear-gradient(135deg, rgba(0, 123, 255, 0.1), rgba(0, 86, 179, 0.1));
+  background: var(--card-bg);
   padding: 15px 20px;
   border-radius: 12px;
   margin-bottom: 20px;
   border: 1px solid rgba(0, 123, 255, 0.2);
   text-align: center;
   font-weight: 600;
-  color: #2c3e50;
+  color: var(--text-color);
 }
 
 .header-actions {
@@ -32,7 +32,7 @@
 
 .add-participant-btn {
   padding: 12px 24px;
-  background: linear-gradient(135deg, #28a745, #20c997);
+  background: var(--gradient-success);
   color: white;
   border: none;
   border-radius: 8px;
@@ -48,12 +48,32 @@
 .add-participant-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(40, 167, 69, 0.4);
-  background: linear-gradient(135deg, #20c997, #17a2b8);
+  background: var(--gradient-success);
+  filter: brightness(0.9);
+}
+
+.theme-toggle-btn {
+  padding: 10px 15px;
+  background: var(--gradient-muted);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+}
+
+.theme-toggle-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(108, 117, 125, 0.4);
+  background: var(--gradient-muted);
+  filter: brightness(0.9);
 }
 
 .logout-btn {
   padding: 10px 20px;
-  background: linear-gradient(135deg, #dc3545, #c82333);
+  background: var(--gradient-danger);
   color: white;
   border: none;
   border-radius: 8px;
@@ -69,16 +89,17 @@
 .logout-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(220, 53, 69, 0.4);
-  background: linear-gradient(135deg, #c82333, #a02622);
+  background: var(--gradient-danger);
+  filter: brightness(0.9);
 }
 
 h1 {
   text-align: center;
-  color: #333;
+  color: var(--text-color);
   margin-bottom: 30px;
   font-size: 2.5rem;
   font-weight: 700;
-  background: linear-gradient(135deg, #007bff, #0056b3);
+  background: var(--gradient-secondary);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -92,29 +113,29 @@ h1 {
 }
 
 .participant-card {
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color);
   padding: 20px;
   border-radius: 8px;
-  background-color: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: var(--card-bg);
+  box-shadow: 0 2px 4px var(--shadow);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .participant-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 8px var(--shadow-hover);
 }
 
 .participant-card h3 {
   margin-top: 0;
-  color: #333;
-  border-bottom: 2px solid #007bff;
+  color: var(--text-color);
+  border-bottom: 2px solid var(--secondary-color);
   padding-bottom: 10px;
 }
 
 .participant-card p {
   margin: 10px 0;
-  color: #666;
+  color: var(--muted-color);
   font-size: 14px;
 }
 
@@ -134,21 +155,21 @@ h1 {
 }
 
 .participant-card button.edit-btn {
-  background-color: #28a745;
+  background: var(--success-color);
   color: white;
 }
 
 .participant-card button.edit-btn:hover {
-  background-color: #218838;
+  background: var(--success-hover);
 }
 
 .participant-card button.delete-btn {
-  background-color: #dc3545;
+  background: var(--danger-color);
   color: white;
 }
 
 .participant-card button.delete-btn:hover {
-  background-color: #c82333;
+  background: var(--danger-hover);
 }
 
 // Стили для формы добавления участника
@@ -188,12 +209,12 @@ h1 {
 
 .add-participant-form input:focus {
   outline: none;
-  border-color: #007bff;
+  border-color: #6f42c1;
 }
 
 .add-participant-form button {
   padding: 10px 20px;
-  background-color: #007bff;
+  background-color: #6f42c1;
   color: white;
   border: none;
   border-radius: 4px;
@@ -248,7 +269,7 @@ h1 {
   margin: 0 0 12px 0;
   font-size: 16px;
   font-weight: 600;
-  color: #007bff;
+  color: #6f42c1;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   border-bottom: 2px solid rgba(0, 123, 255, 0.2);
@@ -263,7 +284,7 @@ h1 {
 }
 
 .grid-column .column-header .badge {
-  background: linear-gradient(135deg, #007bff, #0056b3);
+  background: linear-gradient(135deg, #6f42c1, #5a32a3);
   color: white;
   padding: 4px 8px;
   border-radius: 12px;
@@ -299,7 +320,7 @@ h1 {
   left: 0;
   width: 4px;
   height: 100%;
-  background: linear-gradient(180deg, #007bff, #0056b3);
+  background: linear-gradient(180deg, #6f42c1, #5a32a3);
 }
 
 .participant-card:hover {

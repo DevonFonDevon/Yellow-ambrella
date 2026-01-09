@@ -1,5 +1,11 @@
 // Импортируем React
 import React, { useState } from 'react';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 // Импортируем стили
 import './form-styles.scss';
 
@@ -38,30 +44,31 @@ const AddParticipantForm = ({ onAddParticipant, onDataChange, data }) => {
   };
 
   return (
-    <div className="add-participant-form">
-      <h2>Добавить участника</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Имя:</label>
-          <input
-            type="text"
+    <Paper className="add-participant-form" elevation={4} sx={{ p: 3 }}>
+      <Typography variant="h5" component="h2" sx={{ mb: 2 }}>
+        Добавить участника
+      </Typography>
+      <Box component="form" onSubmit={handleSubmit}>
+        <Stack spacing={2}>
+          <TextField
+            label="Имя"
             value={data.firstName}
             onChange={(e) => onDataChange('firstName', e.target.value)}
-            className={errors.firstName ? 'error' : ''}
+            error={Boolean(errors.firstName)}
+            helperText={errors.firstName}
             placeholder="Введите имя участника"
+            fullWidth
           />
-          {errors.firstName && <span className="error-message">{errors.firstName}</span>}
-        </div>
 
-        <div className="form-group">
-          <label>Творческий номер:</label>
-          <input
-            type="text"
+          <TextField
+            label="Творческий номер"
             value={data.creativeNumber}
             onChange={(e) => onDataChange('creativeNumber', e.target.value)}
-            className={errors.creativeNumber ? 'error' : ''}
+            error={Boolean(errors.creativeNumber)}
+            helperText={errors.creativeNumber}
             placeholder="Выберите или введите творческий номер"
-            list="creative-options"
+            inputProps={{ list: 'creative-options' }}
+            fullWidth
           />
           <datalist id="creative-options">
             <option value="Вокал" />
@@ -69,64 +76,60 @@ const AddParticipantForm = ({ onAddParticipant, onDataChange, data }) => {
             <option value="СДМ" />
             <option value="Выход ведущих" />
           </datalist>
-          {errors.creativeNumber && <span className="error-message">{errors.creativeNumber}</span>}
-        </div>
 
-        <div className="form-group">
-          <label>Телефон:</label>
-          <input
+          <TextField
+            label="Телефон"
             type="tel"
             value={data.phone}
             onChange={(e) => onDataChange('phone', e.target.value)}
-            className={errors.phone ? 'error' : ''}
+            error={Boolean(errors.phone)}
+            helperText={errors.phone}
             placeholder="+375 (XX) XXX-XX-XX"
+            fullWidth
           />
-          {errors.phone && <span className="error-message">{errors.phone}</span>}
-        </div>
 
-        <div className="form-group">
-          <label>Продолжительность номера (мин):</label>
-          <input
+          <TextField
+            label="Продолжительность номера (мин)"
             type="number"
             value={data.duration}
             onChange={(e) => onDataChange('duration', e.target.value)}
-            className={errors.duration ? 'error' : ''}
+            error={Boolean(errors.duration)}
+            helperText={errors.duration}
             placeholder="В минутах"
-            min="1"
+            inputProps={{ min: 1 }}
+            fullWidth
           />
-          {errors.duration && <span className="error-message">{errors.duration}</span>}
-        </div>
 
-        <div className="form-group">
-          <label>Порядок выступления:</label>
-          <input
+          <TextField
+            label="Порядок выступления"
             type="number"
             value={data.performanceOrder || ''}
             onChange={(e) => onDataChange('performanceOrder', e.target.value)}
-            className={errors.performanceOrder ? 'error' : ''}
+            error={Boolean(errors.performanceOrder)}
+            helperText={errors.performanceOrder}
             placeholder="Номер в программе"
-            min="1"
+            inputProps={{ min: 1 }}
+            fullWidth
           />
-          {errors.performanceOrder && <span className="error-message">{errors.performanceOrder}</span>}
-        </div>
 
-        <div className="form-group">
-          <label>Режиссерские заметки:</label>
-          <textarea
+          <TextField
+            label="Режиссерские заметки"
             value={data.directorNotes || ''}
             onChange={(e) => onDataChange('directorNotes', e.target.value)}
-            className={errors.directorNotes ? 'error' : ''}
+            error={Boolean(errors.directorNotes)}
+            helperText={errors.directorNotes}
             placeholder="Заметки режиссера о участнике"
-            rows="3"
+            multiline
+            rows={3}
+            fullWidth
           />
-          {errors.directorNotes && <span className="error-message">{errors.directorNotes}</span>}
-        </div>
 
-        <button type="submit" className="submit-btn">
-          Добавить участника
-        </button>
-      </form>
-    </div>
+          <Button type="submit" variant="contained" size="large">
+            Добавить участника
+          </Button>
+        </Stack>
+      </Box>
+    </Paper>
   );
 };
 

@@ -1,5 +1,9 @@
 // Импортируем React
 import React from 'react';
+import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
+import Divider from '@mui/material/Divider';
+import Typography from '@mui/material/Typography';
 // Импортируем компонент карточки
 import ParticipantCard from './ParticipantCard';
 // Импортируем стили
@@ -37,11 +41,13 @@ const ParticipantGrid = ({ participants, onEdit, onDelete }) => {
         return (
           <div key={columnIndex} className="grid-column">
             <div className="column-header">
-              <span className="badge">Колонка {columnIndex + 1}</span>
-              <div className="line"></div>
-              <span style={{ fontSize: '12px', color: '#666', fontWeight: '500' }}>
-                {firstOrder} - {lastOrder}
-              </span>
+              <Chip label={`Колонка ${columnIndex + 1}`} color="primary" size="small" />
+              <Divider flexItem sx={{ mx: 1 }} />
+              <Box>
+                <Typography variant="caption" color="text.secondary" fontWeight={500}>
+                  {firstOrder} - {lastOrder}
+                </Typography>
+              </Box>
             </div>
             {column.map((participant) => (
               <ParticipantCard

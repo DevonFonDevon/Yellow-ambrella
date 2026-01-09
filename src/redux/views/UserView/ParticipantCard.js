@@ -1,5 +1,15 @@
 // Импортируем React
 import React, { useState } from 'react';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 // Импортируем библиотеку DnD
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -61,163 +71,137 @@ const ParticipantCard = ({ participant, onEdit, onDelete }) => {
   };
 
   return (
-    <div
+    <Card
       ref={setNodeRef}
       style={style}
       {...attributes}
       {...listeners}
       className="participant-card"
+      elevation={isDragging ? 8 : 2}
     >
       {!isEditing ? (
         <>
-          <div className="card-header">
-            <h3>{participant.firstName}</h3>
-            {participant.performanceOrder && (
-              <span className="performance-order">
-                Порядок: {participant.performanceOrder}
-              </span>
-            )}
-          </div>
+          <CardHeader
+            title={<Typography variant="h6">{participant.firstName}</Typography>}
+            action={
+              participant.performanceOrder ? (
+                <Chip label={`Порядок: ${participant.performanceOrder}`} color="secondary" size="small" />
+              ) : null
+            }
+          />
 
-          <div className="card-content">
-            <div className="info-row">
-              <strong>Творческий номер:</strong>
-              <span>{participant.creativeNumber}</span>
-            </div>
+          <CardContent>
+            <Stack spacing={1}>
+              <Typography variant="body2">
+                <strong>Творческий номер:</strong> {participant.creativeNumber}
+              </Typography>
+              <Typography variant="body2">
+                <strong>Телефон:</strong> {participant.phone}
+              </Typography>
+              {participant.duration && (
+                <Typography variant="body2">
+                  <strong>Продолжительность:</strong> {participant.duration} мин
+                </Typography>
+              )}
+              {participant.directorNotes && (
+                <Typography variant="body2" color="text.secondary">
+                  <strong>Заметки:</strong> {participant.directorNotes}
+                </Typography>
+              )}
+            </Stack>
+          </CardContent>
 
-            <div className="info-row">
-              <strong>Телефон:</strong>
-              <span>{participant.phone}</span>
-            </div>
-
-            {participant.duration && (
-              <div className="info-row">
-                <strong>Продолжительность:</strong>
-                <span>{participant.duration} мин</span>
-              </div>
-            )}
-
-            {participant.directorNotes && (
-              <div className="info-row">
-                <strong>Заметки:</strong>
-                <span className="director-notes">{participant.directorNotes}</span>
-              </div>
-            )}
-          </div>
-
-          <div className="card-actions">
-            <button
-              className="edit-btn"
-              onClick={handleEdit}
-            >
+          <CardActions className="card-actions">
+            <Button variant="outlined" onClick={handleEdit}>
               Редактировать
-            </button>
-            <button
-              className="delete-btn"
-              onClick={handleDelete}
-            >
+            </Button>
+            <Button variant="contained" color="error" onClick={handleDelete}>
               Удалить
-            </button>
-          </div>
+            </Button>
+          </CardActions>
         </>
       ) : (
-        <div className="edit-mode">
-          <h4>Редактирование участника</h4>
-          <form onSubmit={(e) => {
-            e.preventDefault();
-            const formData = new FormData(e.target);
-            const updatedData = {
-              firstName: formData.get('firstName'),
-              creativeNumber: formData.get('creativeNumber'),
-              phone: formData.get('phone'),
-              performanceOrder: formData.get('performanceOrder'),
-              directorNotes: formData.get('directorNotes'),
-              duration: formData.get('duration')
-            };
-            handleSave(updatedData);
-          }}>
-            <div className="form-group">
-              <label>Имя:</label>
-              <input
-                type="text"
+        <CardContent className="edit-mode">
+          <Typography variant="subtitle1" sx={{ mb: 2 }}>
+            Редактирование участника
+          </Typography>
+          <Box
+            component="form"
+            onSubmit={(e) => {
+              e.preventDefault();
+              const formData = new FormData(e.target);
+              const updatedData = {
+                firstName: formData.get('firstName'),
+                creativeNumber: formData.get('creativeNumber'),
+                phone: formData.get('phone'),
+                performanceOrder: formData.get('performanceOrder'),
+                directorNotes: formData.get('directorNotes'),
+                duration: formData.get('duration')
+              };
+              handleSave(updatedData);
+            }}
+          >
+            <Stack spacing={2}>
+              <TextField
+                label="Имя"
                 name="firstName"
                 defaultValue={participant.firstName}
                 required
-                className="form-input"
+                fullWidth
               />
-            </div>
-
-            <div className="form-group">
-              <label>Творческий номер:</label>
-              <input
-                type="text"
+              <TextField
+                label="Творческий номер"
                 name="creativeNumber"
                 defaultValue={participant.creativeNumber}
                 required
-                className="form-input"
+                fullWidth
               />
-            </div>
-
-            <div className="form-group">
-              <label>Телефон:</label>
-              <input
-                type="tel"
+              <TextField
+                label="Телефон"
                 name="phone"
+                type="tel"
                 defaultValue={participant.phone}
                 required
-                className="form-input"
+                fullWidth
               />
-            </div>
-
-            <div className="form-group">
-              <label>Продолжительность номера (мин):</label>
-              <input
-                type="number"
+              <TextField
+                label="Продолжительность номера (мин)"
                 name="duration"
-                defaultValue={participant.duration || ''}
-                min="1"
-                className="form-input"
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Порядок выступления:</label>
-              <input
                 type="number"
-                name="performanceOrder"
-                defaultValue={participant.performanceOrder || ''}
-                min="1"
-                className="form-input"
+                defaultValue={participant.duration || ''}
+                inputProps={{ min: 1 }}
+                fullWidth
               />
-            </div>
-
-            <div className="form-group">
-              <label>Режиссерские заметки:</label>
-              <textarea
+              <TextField
+                label="Порядок выступления"
+                name="performanceOrder"
+                type="number"
+                defaultValue={participant.performanceOrder || ''}
+                inputProps={{ min: 1 }}
+                fullWidth
+              />
+              <TextField
+                label="Режиссерские заметки"
                 name="directorNotes"
                 defaultValue={participant.directorNotes || ''}
-                rows="3"
                 placeholder="Заметки режиссера о участнике"
-                className="form-textarea"
+                multiline
+                rows={3}
+                fullWidth
               />
-            </div>
-
-            <div className="form-actions">
-              <button type="submit" className="save-btn">
-                Сохранить
-              </button>
-              <button
-                type="button"
-                className="cancel-btn"
-                onClick={handleCancel}
-              >
-                Отмена
-              </button>
-            </div>
-          </form>
-        </div>
+              <Stack direction="row" spacing={2}>
+                <Button type="submit" variant="contained">
+                  Сохранить
+                </Button>
+                <Button variant="text" onClick={handleCancel}>
+                  Отмена
+                </Button>
+              </Stack>
+            </Stack>
+          </Box>
+        </CardContent>
       )}
-    </div>
+    </Card>
   );
 };
 

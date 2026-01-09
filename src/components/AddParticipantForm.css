@@ -1,29 +1,29 @@
 /* Стили для формы добавления участника */
 
 .add-participant-form {
-  background: linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.8) 100%);
+  background: var(--card-bg);
   padding: 25px;
   border-radius: 16px;
   margin-bottom: 30px;
   border: 1px solid rgba(0, 123, 255, 0.15);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 32px var(--shadow);
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
 }
 
 .add-participant-form:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 12px 40px var(--shadow-hover);
   border-color: rgba(0, 123, 255, 0.25);
 }
 
 .add-participant-form h2 {
   margin-top: 0;
-  color: #2c3e50;
+  color: var(--text-color);
   font-size: 22px;
   margin-bottom: 20px;
   font-weight: 700;
-  background: linear-gradient(135deg, #007bff, #0056b3);
+  background: var(--gradient-primary);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -44,7 +44,7 @@
   display: block;
   margin-bottom: 8px;
   font-weight: 600;
-  color: #34495e;
+  color: var(--text-color);
   font-size: 14px;
   letter-spacing: 0.2px;
 }
@@ -58,14 +58,14 @@
   transition: all 0.3s ease;
   box-sizing: border-box;
   font-family: inherit;
-  background: rgba(255, 255, 255, 0.8);
+  background: var(--input-bg);
 }
 
 .form-group input:focus, .form-group textarea:focus {
   outline: none;
-  border-color: #007bff;
+  border-color: var(--primary-color);
   box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
-  background: white;
+  background: var(--card-bg);
 }
 
 .form-group input.error, .form-group textarea.error {
@@ -90,7 +90,7 @@
 
 button[type="submit"] {
   padding: 14px 28px;
-  background: linear-gradient(135deg, #007bff, #0056b3);
+  background: var(--gradient-primary);
   color: white;
   border: none;
   border-radius: 8px;
@@ -106,7 +106,8 @@ button[type="submit"] {
 button[type="submit"]:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
-  background: linear-gradient(135deg, #0056b3, #004085);
+  background: var(--gradient-primary);
+  filter: brightness(0.9);
 }
 
 button[type="submit"]:active {
